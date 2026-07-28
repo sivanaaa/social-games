@@ -63,8 +63,8 @@ button:focus-visible {
 .screen {
     display: none;
     height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .screen.active {
@@ -89,6 +89,7 @@ button:focus-visible {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .setup-topbar {
@@ -382,6 +383,7 @@ button:focus-visible {
     justify-content: center;
     padding: 18px;
     min-height: 88px;
+    min-width: 0;
     text-align: center;
     font-size: clamp(21px, 2vw, 34px);
     font-weight: 900;
@@ -390,6 +392,7 @@ button:focus-visible {
     background: #122136;
     border-inline-end: 1px solid rgba(255,255,255,0.12);
     border-block-end: 1px solid rgba(255,255,255,0.12);
+    overflow-wrap: anywhere;
 }
 
 .category-cell:nth-child(5n) {
@@ -596,6 +599,8 @@ button:focus-visible {
 .modal {
     width: min(620px, 100%);
     max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
     background: var(--panel);
     border: 2px solid var(--border);
     border-radius: 28px;
@@ -646,18 +651,73 @@ button:focus-visible {
 }
 
 @media (max-width: 1180px) {
+    .setup-screen {
+        height: auto;
+        min-height: 100%;
+        grid-template-rows: auto auto auto auto;
+        align-content: start;
+    }
+
+    .screen-shell {
+        height: auto;
+        min-height: 100%;
+        grid-template-rows: auto auto;
+        align-content: start;
+    }
+
     .setup-panel {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, auto));
     }
 
     .game-main {
         grid-template-columns: 1fr;
+        height: auto;
     }
 
     .category-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
         grid-template-rows: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .setup-topbar {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .setup-title-block {
+        order: -1;
+        width: 100%;
+    }
+
+    .setup-panel {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(5, minmax(0, 1fr));
+    }
+
+    .manual-letter-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .setup-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footer-summary {
+        text-align: center;
+        order: -1;
+    }
+
+    .letter-card {
+        min-height: 220px;
     }
 }
 
@@ -743,27 +803,3 @@ section[aria-label="מסך הגדרות"] button:last-of-type {
     cursor: pointer;
 }
 
-/* =========================================================
-   📱 CLEAN MOBILE FIX
-   ========================================================= */
-
-@media (max-width: 768px) {
-    html, body {
-        height: auto !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-    }
-
-    .categories-grid, 
-    .cards-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-    }
-
-    .category-card, 
-    .card {
-        min-height: 70px !important;
-        padding: 8px !important;
-    }
-}
