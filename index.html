@@ -12,21 +12,23 @@
         <section id="setupScreen" class="screen active" aria-label="מסך הגדרות">
             <div class="setup-screen">
                 <header class="setup-topbar">
-                    <div class="creator-stamp" aria-label="נוצר על ידי C.van עם הרבה מחשבה">
+                    <div class="creator-stamp" aria-label="נוצר על ידי C.van עם הרבה הומור ועם הרבה מחשבה">
                         <div class="creator-name">C.van</div>
                         <div class="creator-line">נוצר עם</div>
-                        <div class="creator-message">הרבה מחשבה</div>
+                        <div class="creator-humor">הרבה הומור</div>
+                        <div class="creator-message">ועם הרבה מחשבה</div>
                     </div>
                     <div class="setup-title-block">
-                        <h1>ארץ עיר – מתחברים</h1>
+                        <h1>ארץ עיר<span class="title-tagline">רק בחברתי</span></h1>
+                        <div class="usp-badge">המשחק שרץ לבד</div>
                         <div class="game-hashtag">#מתחברים</div>
-                        <p class="setup-subtitle">מגדירים פעם אחת. המשחק רץ לבד.</p>
+                        <p class="setup-subtitle">תכינו דף וכלי כתיבה - וזהו! השאר עלי 🙂</p>
                     </div>
                     <button id="setupHomeButton" class="nav-button nav-home" type="button" aria-label="מסך הבית">מסך הבית</button>
                 </header>
 
                 <section class="setup-panel" aria-label="לחצנים להגדרות משחק">
-                    <div class="control-section">
+                    <div class="control-section hero-section">
                         <div class="control-label">כמה משתתפים?</div>
                         <div class="participant-row">
                             <button id="participantMinus" type="button" class="icon-button" aria-label="הפחת משתתפים">־</button>
@@ -34,70 +36,105 @@
                             <button id="participantPlus" type="button" class="icon-button" aria-label="הוסף משתתפים">+</button>
                         </div>
                     </div>
-                    <div class="control-section">
-                        <div class="control-label">איך משחקים?</div>
-                        <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב משחק">
-                            <button id="groupModeButton" type="button" class="option-button selected" aria-pressed="true">בקבוצות</button>
-                            <button id="classModeButton" type="button" class="option-button" aria-pressed="false">כל הכיתה</button>
-                        </div>
-                        <div id="groupSizeSection" class="group-size-section">
-                            <div class="control-subtitle">גודל קבוצה</div>
-                            <div class="group-size-buttons" role="radiogroup" aria-label="בחר גודל קבוצה">
-                                <button type="button" class="option-button" data-size="3" aria-pressed="false">3</button>
-                                <button type="button" class="option-button selected" data-size="4" aria-pressed="true">4</button>
-                                <button type="button" class="option-button" data-size="5" aria-pressed="false">5</button>
+                    <details class="control-section" open>
+                        <summary class="control-summary">
+                            <span class="control-label">איך משחקים?</span>
+                            <span class="chevron" aria-hidden="true"></span>
+                        </summary>
+                        <div class="control-body">
+                            <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב משחק">
+                                <button id="groupModeButton" type="button" class="option-button selected" aria-pressed="true">בקבוצות</button>
+                                <button id="classModeButton" type="button" class="option-button" aria-pressed="false">כל הכיתה</button>
                             </div>
-                            <div id="groupSummaryText" class="control-note">6 קבוצות · 4 משתתפים בכל קבוצה</div>
+                            <div id="groupSizeSection" class="group-size-section">
+                                <div class="control-subtitle">גודל קבוצה</div>
+                                <div class="group-size-buttons" role="radiogroup" aria-label="בחר גודל קבוצה">
+                                    <button type="button" class="option-button" data-size="3" aria-pressed="false">3</button>
+                                    <button type="button" class="option-button selected" data-size="4" aria-pressed="true">4</button>
+                                    <button type="button" class="option-button" data-size="5" aria-pressed="false">5</button>
+                                </div>
+                                <div id="groupSummaryText" class="control-note">6 קבוצות · 4 משתתפים בכל קבוצה</div>
+                            </div>
+                            <button id="nameToggleButton" type="button" class="link-button" aria-haspopup="dialog">הוספת שמות</button>
                         </div>
-                        <button id="nameToggleButton" type="button" class="link-button" aria-haspopup="dialog">הוספת שמות</button>
-                    </div>
-                    <div class="control-section">
-                        <div class="control-label">כמה זמן?</div>
-                        <div class="mode-buttons duration-buttons" role="radiogroup" aria-label="בחר משך משחק">
-                            <button type="button" class="option-button selected" data-minutes="10" aria-pressed="true">10 דקות</button>
-                            <button type="button" class="option-button" data-minutes="15" aria-pressed="false">15 דקות</button>
-                            <button type="button" class="option-button" data-minutes="20" aria-pressed="false">20 דקות</button>
+                    </details>
+                    <details class="control-section" open>
+                        <summary class="control-summary">
+                            <span class="control-label">כמה זמן?</span>
+                            <span class="chevron" aria-hidden="true"></span>
+                        </summary>
+                        <div class="control-body">
+                            <div class="mode-buttons duration-buttons" role="radiogroup" aria-label="בחר משך משחק">
+                                <button type="button" class="option-button selected" data-minutes="10" aria-pressed="true">10 דקות</button>
+                                <button type="button" class="option-button" data-minutes="15" aria-pressed="false">15 דקות</button>
+                                <button type="button" class="option-button" data-minutes="20" aria-pressed="false">20 דקות</button>
+                            </div>
+                            <div id="roundsDisplay" class="control-note">4 סיבובים</div>
                         </div>
-                        <div id="roundsDisplay" class="control-note">4 סיבובים</div>
-                    </div>
-                    <div class="control-section">
-                        <div class="control-label">איך תיבחר האות?</div>
-                        <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב בחירת אות">
-                            <button id="letterModeAutoButton" type="button" class="option-button selected" aria-pressed="true">הגרלה אוטומטית</button>
-                            <button id="letterModeManualButton" type="button" class="option-button" aria-pressed="false">בחירה ידנית</button>
+                    </details>
+                    <details class="control-section" open>
+                        <summary class="control-summary">
+                            <span class="control-label">איך תיבחר האות?</span>
+                            <span class="chevron" aria-hidden="true"></span>
+                        </summary>
+                        <div class="control-body">
+                            <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב בחירת אות">
+                                <button id="letterModeAutoButton" type="button" class="option-button selected" aria-pressed="true">הגרלה אוטומטית</button>
+                                <button id="letterModeManualButton" type="button" class="option-button" aria-pressed="false">בחירה ידנית</button>
+                            </div>
+                            <div class="letter-row">
+                                <div class="letter-visual" id="letterVisual" aria-hidden="true"><span>?</span></div>
+                                <div id="selectedLetterIndicator" class="selected-letter hidden" aria-live="polite">אות נבחרת: א</div>
+                            </div>
+                            <div id="manualLetterGrid" class="manual-letter-grid hidden" aria-label="בחר אות ידנית"></div>
+                            <div id="letterModeNote" class="control-note">האות תוגרל עם תחילת הסיבוב</div>
                         </div>
-                        <div class="letter-row">
-                            <div class="letter-visual" id="letterVisual" aria-hidden="true"><span>?</span></div>
-                            <div id="selectedLetterIndicator" class="selected-letter hidden" aria-live="polite">אות נבחרת: א</div>
-                        </div>
-                        <div id="manualLetterGrid" class="manual-letter-grid hidden" aria-label="בחר אות ידנית"></div>
-                        <div id="letterModeNote" class="control-note">האות תוגרל עם תחילת הסיבוב</div>
-                    </div>
+                    </details>
                 </section>
 
-                <section class="category-board" aria-label="טבלת קטגוריות">
-                    <div class="category-board-top">
-                        <div>
-                            <div class="control-label">סוג הקטגוריות</div>
-                            <div class="category-packs" role="radiogroup" aria-label="בחר חבילת קטגוריות">
-                                <button type="button" class="pack-button selected" data-pack="mixed" aria-pressed="true">משולב</button>
-                                <button type="button" class="pack-button" data-pack="intro" aria-pressed="false">היכרות</button>
-                                <button type="button" class="pack-button" data-pack="social" aria-pressed="false">גיבוש חברתי</button>
-                                <button type="button" class="pack-button" data-pack="strengths" aria-pressed="false">כוחות וחוזקות</button>
-                                <button type="button" class="pack-button" data-pack="values" aria-pressed="false">ערכים ומנהיגות</button>
-                                <button type="button" class="pack-button" data-pack="fun" aria-pressed="false">קליל ומצחיק</button>
+                <details class="category-board" aria-label="טבלת קטגוריות" open>
+                    <summary class="control-summary">
+                        <span class="control-label">קטגוריות למשחק</span>
+                        <span class="chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="control-body">
+                        <div class="category-board-top">
+                            <div>
+                                <div class="control-label">סוג הקטגוריות</div>
+                                <div class="category-packs" role="radiogroup" aria-label="בחר חבילת קטגוריות">
+                                    <button type="button" class="pack-button selected" data-pack="mixed" aria-pressed="true">משולב</button>
+                                    <button type="button" class="pack-button" data-pack="intro" aria-pressed="false">היכרות</button>
+                                    <button type="button" class="pack-button" data-pack="social" aria-pressed="false">גיבוש חברתי</button>
+                                    <button type="button" class="pack-button" data-pack="strengths" aria-pressed="false">כוחות וחוזקות</button>
+                                    <button type="button" class="pack-button" data-pack="values" aria-pressed="false">ערכים ומנהיגות</button>
+                                    <button type="button" class="pack-button" data-pack="fun" aria-pressed="false">קליל ומצחיק</button>
+                                    <button type="button" class="pack-button" data-pack="parents" aria-pressed="false">אסיפת הורים</button>
+                                </div>
+                                <div class="control-subtitle grade-subtitle">או לפי כיתה</div>
+                                <div class="category-packs" role="radiogroup" aria-label="בחר לפי כיתה">
+                                    <button type="button" class="pack-button" data-pack="kindergarten" aria-pressed="false">ילדי הגן</button>
+                                    <button type="button" class="pack-button" data-pack="grade1_2" aria-pressed="false">כיתות א-ב</button>
+                                    <button type="button" class="pack-button" data-pack="grade3_4" aria-pressed="false">כיתות ג-ד</button>
+                                    <button type="button" class="pack-button" data-pack="grade5_6" aria-pressed="false">כיתות ה-ו</button>
+                                    <button type="button" class="pack-button" data-pack="grade7_8" aria-pressed="false">כיתות ז-ח</button>
+                                    <button type="button" class="pack-button" data-pack="grade9_10" aria-pressed="false">כיתות ט-י</button>
+                                    <button type="button" class="pack-button" data-pack="grade11_12" aria-pressed="false">כיתות יא-יב</button>
+                                </div>
                             </div>
+                            <button id="switchCategoriesButton" type="button" class="secondary-button">החלפת קטגוריות</button>
                         </div>
-                        <button id="switchCategoriesButton" type="button" class="secondary-button">החלפת קטגוריות</button>
+                        <div class="category-grid" id="setupCategoryGrid" role="grid" aria-label="10 קטגוריות במשחק"></div>
+                        <div class="category-board-footer">10 קטגוריות במשחק</div>
                     </div>
-                    <div class="category-grid" id="setupCategoryGrid" role="grid" aria-label="10 קטגוריות במשחק"></div>
-                    <div class="category-board-footer">10 קטגוריות במשחק</div>
-                </section>
+                </details>
 
                 <section class="setup-footer">
-                    <button id="openHelpButton" type="button" class="secondary-button">איך משחקים?</button>
-                    <div id="footerSummary" class="footer-summary">24 משתתפים · קבוצות של 4 · 10 דקות · 4 סיבובים</div>
-                    <button id="startGameButton" type="button" class="primary-button">התחילו משחק</button>
+                    <div class="setup-footer-row">
+                        <button id="openHelpButton" type="button" class="secondary-button">איך משחקים?</button>
+                        <div id="footerSummary" class="footer-summary">24 משתתפים · קבוצות של 4 · 10 דקות · 4 סיבובים</div>
+                        <button id="startGameButton" type="button" class="primary-button">התחילו משחק</button>
+                    </div>
+                    <div class="copyright-note">© 2026 C.van · כל הזכויות שמורות · אין להעתיק, למכור או להפיץ ללא רשות בכתב</div>
                 </section>
             </div>
         </section>
@@ -265,6 +302,23 @@
         </div>
     </div>
 </div>
+<script>
+    (function () {
+        var collapsibles = document.querySelectorAll('#setupScreen details');
+        function applyDefaultState() {
+            var isMobile = window.matchMedia('(max-width: 640px)').matches;
+            collapsibles.forEach(function (el) {
+                if (isMobile) {
+                    el.removeAttribute('open');
+                } else {
+                    el.setAttribute('open', '');
+                }
+            });
+        }
+        applyDefaultState();
+        window.addEventListener('resize', applyDefaultState);
+    })();
+</script>
 <script src="script.js"></script>
 </body>
 </html>
