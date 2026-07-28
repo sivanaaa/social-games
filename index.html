@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ארץ עיר – מתחברים</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+    <main class="screens">
+        <section id="setupScreen" class="screen active" aria-label="מסך הגדרות">
+            <div class="setup-screen">
+                <header class="setup-topbar">
+                    <div class="creator-stamp" aria-label="נוצר על ידי C.van עם הרבה מחשבה">
+                        <div class="creator-name">C.van</div>
+                        <div class="creator-line">נוצר עם</div>
+                        <div class="creator-message">הרבה מחשבה</div>
+                    </div>
+                    <div class="setup-title-block">
+                        <h1>ארץ עיר – מתחברים</h1>
+                        <div class="game-hashtag">#מתחברים</div>
+                        <p class="setup-subtitle">מגדירים פעם אחת. המשחק רץ לבד.</p>
+                    </div>
+                    <button id="setupHomeButton" class="nav-button nav-home" type="button" aria-label="מסך הבית">מסך הבית</button>
+                </header>
+
+                <section class="setup-panel" aria-label="לחצנים להגדרות משחק">
+                    <div class="control-section">
+                        <div class="control-label">כמה משתתפים?</div>
+                        <div class="participant-row">
+                            <button id="participantMinus" type="button" class="icon-button" aria-label="הפחת משתתפים">־</button>
+                            <div class="participant-count" aria-live="polite"><span id="participantCountInput">24</span></div>
+                            <button id="participantPlus" type="button" class="icon-button" aria-label="הוסף משתתפים">+</button>
+                        </div>
+                    </div>
+                    <div class="control-section">
+                        <div class="control-label">איך משחקים?</div>
+                        <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב משחק">
+                            <button id="groupModeButton" type="button" class="option-button selected" aria-pressed="true">בקבוצות</button>
+                            <button id="classModeButton" type="button" class="option-button" aria-pressed="false">כל הכיתה</button>
+                        </div>
+                        <div id="groupSizeSection" class="group-size-section">
+                            <div class="control-subtitle">גודל קבוצה</div>
+                            <div class="group-size-buttons" role="radiogroup" aria-label="בחר גודל קבוצה">
+                                <button type="button" class="option-button" data-size="3" aria-pressed="false">3</button>
+                                <button type="button" class="option-button selected" data-size="4" aria-pressed="true">4</button>
+                                <button type="button" class="option-button" data-size="5" aria-pressed="false">5</button>
+                            </div>
+                            <div id="groupSummaryText" class="control-note">6 קבוצות · 4 משתתפים בכל קבוצה</div>
+                        </div>
+                        <button id="nameToggleButton" type="button" class="link-button" aria-haspopup="dialog">הוספת שמות</button>
+                    </div>
+                    <div class="control-section">
+                        <div class="control-label">כמה זמן?</div>
+                        <div class="mode-buttons duration-buttons" role="radiogroup" aria-label="בחר משך משחק">
+                            <button type="button" class="option-button selected" data-minutes="10" aria-pressed="true">10 דקות</button>
+                            <button type="button" class="option-button" data-minutes="15" aria-pressed="false">15 דקות</button>
+                            <button type="button" class="option-button" data-minutes="20" aria-pressed="false">20 דקות</button>
+                        </div>
+                        <div id="roundsDisplay" class="control-note">4 סיבובים</div>
+                    </div>
+                    <div class="control-section">
+                        <div class="control-label">איך תיבחר האות?</div>
+                        <div class="mode-buttons" role="radiogroup" aria-label="בחר מצב בחירת אות">
+                            <button id="letterModeAutoButton" type="button" class="option-button selected" aria-pressed="true">הגרלה אוטומטית</button>
+                            <button id="letterModeManualButton" type="button" class="option-button" aria-pressed="false">בחירה ידנית</button>
+                        </div>
+                        <div class="letter-row">
+                            <div class="letter-visual" id="letterVisual" aria-hidden="true"><span>?</span></div>
+                            <div id="selectedLetterIndicator" class="selected-letter hidden" aria-live="polite">אות נבחרת: א</div>
+                        </div>
+                        <div id="manualLetterGrid" class="manual-letter-grid hidden" aria-label="בחר אות ידנית"></div>
+                        <div id="letterModeNote" class="control-note">האות תוגרל עם תחילת הסיבוב</div>
+                    </div>
+                </section>
+
+                <section class="category-board" aria-label="טבלת קטגוריות">
+                    <div class="category-board-top">
+                        <div>
+                            <div class="control-label">סוג הקטגוריות</div>
+                            <div class="category-packs" role="radiogroup" aria-label="בחר חבילת קטגוריות">
+                                <button type="button" class="pack-button selected" data-pack="mixed" aria-pressed="true">משולב</button>
+                                <button type="button" class="pack-button" data-pack="intro" aria-pressed="false">היכרות</button>
+                                <button type="button" class="pack-button" data-pack="social" aria-pressed="false">גיבוש חברתי</button>
+                                <button type="button" class="pack-button" data-pack="strengths" aria-pressed="false">כוחות וחוזקות</button>
+                                <button type="button" class="pack-button" data-pack="values" aria-pressed="false">ערכים ומנהיגות</button>
+                                <button type="button" class="pack-button" data-pack="fun" aria-pressed="false">קליל ומצחיק</button>
+                            </div>
+                        </div>
+                        <button id="switchCategoriesButton" type="button" class="secondary-button">החלפת קטגוריות</button>
+                    </div>
+                    <div class="category-grid" id="setupCategoryGrid" role="grid" aria-label="10 קטגוריות במשחק"></div>
+                    <div class="category-board-footer">10 קטגוריות במשחק</div>
+                </section>
+
+                <section class="setup-footer">
+                    <button id="openHelpButton" type="button" class="secondary-button">איך משחקים?</button>
+                    <div id="footerSummary" class="footer-summary">24 משתתפים · קבוצות של 4 · 10 דקות · 4 סיבובים</div>
+                    <button id="startGameButton" type="button" class="primary-button">התחילו משחק</button>
+                </section>
+            </div>
+        </section>
+
+        <section id="groupScreen" class="screen" aria-label="מסך קבוצות">
+            <div class="screen-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">הקבוצות מוכנות</div>
+                        <h1>המשחק מתחיל בקרוב</h1>
+                        <p id="groupCountText" class="screen-note">24 משתתפים בחלוקה ל־6 קבוצות.</p>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body">
+                    <div class="group-countdown-box">
+                        <span>המשחק מתחיל בעוד</span>
+                        <strong id="groupCountdownNumber">5</strong>
+                        <span>שניות</span>
+                    </div>
+                    <div id="groupList" class="group-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="countdownScreen" class="screen" aria-label="מסך ספירה לאחור">
+            <div class="screen-shell centered-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">מתחילים</div>
+                        <h1>המשחק מתחיל</h1>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body countdown-body">
+                    <div id="countdownLabel" class="countdown-note">המשחק מתחיל בעוד</div>
+                    <div id="countdownNumber" class="countdown-number">3</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gameScreen" class="screen" aria-label="מסך המשחק">
+            <div class="screen-shell">
+                <header class="game-topbar">
+                    <div class="game-top-left">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                    <div class="game-top-title">
+                        <div class="eyebrow">סיבוב</div>
+                        <strong id="roundHeader">1 מתוך 4</strong>
+                    </div>
+                </header>
+                <div class="progress-wrapper"><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div></div>
+                <div class="game-main">
+                    <div class="game-left-panel">
+                        <div class="letter-card"><span id="letterDisplay">א</span></div>
+                        <div class="timer-block">
+                            <div class="timer-title" id="timerLabel">כותבים</div>
+                            <div id="timerDisplay" class="timer-large">01:30</div>
+                            <div id="statusText" class="status-text">כותבים תשובות</div>
+                        </div>
+                    </div>
+                    <div class="game-right-panel">
+                        <div class="category-board-title">קטגוריות</div>
+                        <div class="category-grid" id="categoryGrid" role="grid" aria-label="10 קטגוריות למשחק"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="shareScreen" class="screen" aria-label="מסך שיתוף">
+            <div class="screen-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">עכשיו משתפים</div>
+                        <h1>שיחה קצרה</h1>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body share-body">
+                    <div id="shareQuestion" class="share-question">איזו תשובה הפתיעה אתכם?</div>
+                    <div class="share-timer-row">
+                        <span>נותרו</span>
+                        <strong id="shareTimerDisplay" class="share-timer-large">45</strong>
+                        <span>שניות</span>
+                    </div>
+                    <div id="sharePhaseText" class="share-phase-text">שתפו תשובה אחת בקבוצה.</div>
+                    <div id="shareCountdownRow" class="share-countdown-row hidden">
+                        <span>הסיבוב הבא מתחיל בעוד</span>
+                        <strong id="shareNextCountdown" class="share-next-countdown">3</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="finishScreen" class="screen" aria-label="מסך סיום המשחק">
+            <div class="screen-shell centered-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">סיום המשחק</div>
+                        <h1>המשחק הסתיים</h1>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body finish-body">
+                    <p id="finishRoundsText" class="finish-text">שוחקו 4 סיבובים.</p>
+                    <p id="finishLettersText" class="finish-text">אותות שנבחרו: א, ב, ג, ד.</p>
+                    <div class="finish-actions">
+                        <button id="playAgainButton" type="button" class="primary-button">שחזרו משחק</button>
+                        <button id="anotherGameButton" type="button" class="secondary-button">משחק נוסף</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="namesOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="namesTitle">
+        <div class="modal modal-names">
+            <div class="modal-title" id="namesTitle">הוספת שמות משתתפים</div>
+            <p class="help-text">הוסיפו שמות כל אחד בשורה או מופרדים בפסיק.</p>
+            <textarea id="participantNamesInput" rows="6" placeholder="הדביקו כאן"></textarea>
+            <div class="modal-actions">
+                <button id="closeNamesButton" type="button" class="primary-button">סגור</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div class="modal modal-help">
+            <div class="modal-title" id="helpTitle">איך משחקים?</div>
+            <div class="help-list">
+                <p>1. בכל סיבוב תופיע אות גדולה במסך.</p>
+                <p>2. כתבו תשובות לכל קטגוריה שמתחילה באות.</p>
+                <p>3. בזמן המוקצב תכתבו ושיתוף יתבצע בסוף.</p>
+                <p>4. המשחק ממשיך לבד לסיבוב הבא.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="helpStartButton" type="button" class="primary-button">התחל משחק</button>
+                <button id="closeHelpButton" type="button" class="secondary-button">סגור</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exitOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="exitTitle">
+        <div class="modal modal-confirm">
+            <div class="modal-title" id="exitTitle">לצאת מהמשחק?</div>
+            <p class="confirm-message">המשחק הנוכחי ייפסק ותחזרו למסך הבית.</p>
+            <div class="modal-actions">
+                <button id="confirmNo" type="button" class="secondary-button">להמשיך לשחק</button>
+                <button id="confirmYes" type="button" class="primary-button">לצאת</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
