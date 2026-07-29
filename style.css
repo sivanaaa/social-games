@@ -84,12 +84,19 @@ button:focus-visible {
 
 .setup-screen {
     display: grid;
-    grid-template-rows: minmax(72px, 0.8fr) minmax(220px, 2.1fr) minmax(230px, 2.4fr) minmax(74px, 0.8fr);
+    grid-template-rows: auto minmax(220px, 2.1fr) minmax(230px, 2.4fr) minmax(74px, 0.8fr);
     gap: clamp(8px, 1vw, 16px);
     height: 100%;
     padding: clamp(10px, 1vw, 16px);
     min-width: 0;
     min-height: 0;
+}
+
+/* Reserves scroll-container clearance so the corner signature badge
+   (position:absolute, negative top offset) isn't clipped by #setupScreen's
+   own overflow-y:auto. */
+#setupScreen {
+    padding-top: 20px;
 }
 
 .setup-topbar,
@@ -107,6 +114,7 @@ button:focus-visible {
     position: relative;
     min-height: 0;
     flex-direction: column;
+    flex-wrap: nowrap;
     text-align: center;
     justify-content: center;
     gap: 6px;
@@ -117,14 +125,43 @@ button:focus-visible {
     box-shadow: 0 12px 30px var(--shadow);
 }
 
-.creator-stamp {
+/* ---- Reusable signature component (logo + rotating caption) ---- */
+/* One DOM instance is relocated between screens by signature.js; slots below
+   only control where it sits within each screen's own header layout. */
+
+.signature-slot {
+    min-width: 0;
+}
+
+.signature-slot--corner {
     position: absolute;
-    top: -24px;
-    inset-inline-end: 20px;
-    width: 94px;
-    min-width: 94px;
+    top: -22px;
+    inset-inline-end: 18px;
+    z-index: 5;
+    max-width: 118px;
+}
+
+.signature-slot--corner .signature-caption {
+    max-width: 118px;
+}
+
+.signature-slot--inline {
+    display: flex;
+    justify-content: center;
+}
+
+.signature-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.creator-stamp {
+    width: clamp(72px, 9vw, 90px);
+    min-width: clamp(72px, 9vw, 90px);
     aspect-ratio: 1;
-    padding: 9px;
+    padding: 8px;
     border-radius: 50%;
     border: 3px solid var(--gold);
     background: radial-gradient(circle at 30% 25%, #1c3050, #0c1524);
@@ -138,21 +175,21 @@ button:focus-visible {
 }
 
 .creator-name {
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 900;
     letter-spacing: 0.02em;
 }
 
 .creator-line,
 .creator-message {
-    font-size: 8px;
+    font-size: 7px;
     font-weight: 700;
     margin: 0;
     color: var(--text);
 }
 
 .creator-humor {
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 900;
     font-style: italic;
     margin-top: 1px;
@@ -165,6 +202,30 @@ button:focus-visible {
 
 .creator-message {
     margin-top: 1px;
+}
+
+.signature-caption {
+    max-width: 160px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--muted);
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.signature-caption.is-transitioning {
+    opacity: 0;
+    transform: translateY(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .signature-caption {
+        transition: none;
+    }
 }
 
 .setup-title-block h1 {
@@ -232,8 +293,16 @@ button:focus-visible {
     max-width: 720px;
 }
 
-.setup-topbar .nav-button {
+.setup-topbar-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
     margin-top: 8px;
+}
+
+.setup-topbar-actions .nav-button {
+    flex: 1;
+    min-width: 0;
 }
 
 .nav-button {
@@ -546,6 +615,83 @@ button:focus-visible {
     font-weight: 600;
     letter-spacing: 0.01em;
     opacity: 0.75;
+}
+
+.game-mode-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.mode-toggle-button {
+    flex: 1;
+    border-radius: 16px;
+    padding: 10px 12px;
+    min-height: 44px;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--text);
+    background: var(--panel-light);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+}
+
+.mode-toggle-button.selected {
+    background: var(--green);
+    color: #08111F;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(168, 240, 0, 0.28);
+}
+
+.room-code-box {
+    background: var(--panel);
+    border: 2px solid rgba(255, 209, 102, 0.55);
+    border-radius: 28px;
+    padding: 32px 24px;
+    text-align: center;
+    display: grid;
+    gap: 12px;
+    box-shadow: 0 12px 30px var(--shadow);
+}
+
+.room-code-value {
+    font-size: clamp(48px, 10vw, 90px);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+}
+
+.room-joined-count {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.join-code-input {
+    width: 100%;
+    text-align: center;
+    font-size: clamp(32px, 8vw, 56px);
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 20px 16px;
+    border-radius: 24px;
+    background: var(--panel);
+    border: 2px solid rgba(255, 209, 102, 0.55);
+    color: var(--text);
+    box-shadow: 0 12px 30px var(--shadow);
+}
+
+.join-code-input::placeholder {
+    color: var(--muted);
+    opacity: 0.5;
+}
+
+.join-error {
+    text-align: center;
+    color: var(--pink);
+    font-weight: 800;
+    font-size: 16px;
 }
 
 .primary-button {
@@ -870,32 +1016,12 @@ details[open] {
     }
 
     .setup-topbar {
-        padding: 64px 16px 8px;
+        padding: 128px 16px 8px;
         gap: 3px;
     }
 
     .usp-badge {
         margin-top: 3px;
-    }
-
-    .creator-stamp {
-        width: 72px;
-        min-width: 72px;
-        padding: 6px;
-        top: -14px;
-    }
-
-    .creator-name {
-        font-size: 12px;
-    }
-
-    .creator-line,
-    .creator-message {
-        font-size: 7px;
-    }
-
-    .creator-humor {
-        font-size: 8px;
     }
 
     .setup-title-block h1 {
@@ -909,9 +1035,14 @@ details[open] {
         font-size: 15px;
     }
 
-    .setup-topbar .nav-button {
-        width: 100%;
+    .setup-topbar-actions {
         margin-top: 8px;
+    }
+
+    .setup-topbar-actions .nav-button {
+        min-width: 0;
+        font-size: 13px;
+        padding: 0 8px;
     }
 
     .setup-panel {

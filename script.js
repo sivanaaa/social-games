@@ -263,6 +263,8 @@ function bindEvents() {
     navExitButtons.forEach(button => button.addEventListener('click', showExitModal));
     dom.confirmYes.addEventListener('click', confirmExit);
     dom.confirmNo.addEventListener('click', closeExitModal);
+    dom.playAgainButton.addEventListener('click', startGame);
+    dom.anotherGameButton.addEventListener('click', goHome);
     document.addEventListener('keydown', handleKeyDown);
 }
 
@@ -441,7 +443,6 @@ function renderCategories() {
     }
     dom.setupCategoryGrid.innerHTML = markup;
     dom.categoryGrid.innerHTML = markup;
-    console.log('Categories rendered', state.activeCategories.length);
 }
 
 function renderFooterSummary() {
@@ -450,6 +451,10 @@ function renderFooterSummary() {
 }
 
 function startGame() {
+    if (window.digitalGameMode === 'digital' && window.startDigitalGame) {
+        window.startDigitalGame();
+        return;
+    }
     console.log('Game started');
     stopAllTimers();
     state.groups = buildGroups();
@@ -673,6 +678,7 @@ function confirmExit() {
 }
 
 function goHome() {
+    if (window.leaveDigitalGame) window.leaveDigitalGame();
     stopAllTimers();
     state.paused = false;
     state.currentRound = 0;
@@ -699,5 +705,10 @@ function updateProgress(value, total) {
     const percent = total > 0 ? ((total - value) / total) * 100 : 0;
     dom.progressFill.style.width = `${percent}%`;
 }
+
+// Exposed for multiplayer.js (top-level const/let don't attach to window automatically)
+window.state = state;
+window.dom = dom;
+window.letters = letters;
 
 init();

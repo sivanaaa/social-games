@@ -12,19 +12,17 @@
         <section id="setupScreen" class="screen active" aria-label="מסך הגדרות">
             <div class="setup-screen">
                 <header class="setup-topbar">
-                    <div class="creator-stamp" aria-label="נוצר על ידי C.van עם הרבה הומור ועם הרבה מחשבה">
-                        <div class="creator-name">C.van</div>
-                        <div class="creator-line">נוצר עם</div>
-                        <div class="creator-humor">הרבה הומור</div>
-                        <div class="creator-message">ועם הרבה מחשבה</div>
-                    </div>
+                    <div class="signature-slot signature-slot--corner"></div>
                     <div class="setup-title-block">
                         <h1>ארץ עיר<span class="title-tagline">רק בחברתי</span></h1>
                         <div class="usp-badge">המשחק שרץ לבד</div>
                         <div class="game-hashtag">#מתחברים</div>
                         <p class="setup-subtitle">תכינו דף וכלי כתיבה - וזהו! השאר עלי 🙂</p>
                     </div>
-                    <button id="setupHomeButton" class="nav-button nav-home" type="button" aria-label="מסך הבית">מסך הבית</button>
+                    <div class="setup-topbar-actions">
+                        <button id="setupHomeButton" class="nav-button nav-home" type="button" aria-label="מסך הבית">מסך הבית</button>
+                        <button id="openJoinButton" class="nav-button" type="button">הצטרפות עם קוד</button>
+                    </div>
                 </header>
 
                 <section class="setup-panel" aria-label="לחצנים להגדרות משחק">
@@ -129,6 +127,10 @@
                 </details>
 
                 <section class="setup-footer">
+                    <div class="game-mode-toggle" role="radiogroup" aria-label="בחר סוג משחק">
+                        <button type="button" class="mode-toggle-button selected" data-game-mode="local" aria-pressed="true">מסך משותף</button>
+                        <button type="button" class="mode-toggle-button" data-game-mode="digital" aria-pressed="false">משחק דיגיטלי</button>
+                    </div>
                     <div class="setup-footer-row">
                         <button id="openHelpButton" type="button" class="secondary-button">איך משחקים?</button>
                         <div id="footerSummary" class="footer-summary">24 משתתפים · קבוצות של 4 · 10 דקות · 4 סיבובים</div>
@@ -151,6 +153,7 @@
                         <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
                         <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
                     </div>
+                    <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body">
                     <div class="group-countdown-box">
@@ -174,6 +177,7 @@
                         <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
                         <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
                     </div>
+                    <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body countdown-body">
                     <div id="countdownLabel" class="countdown-note">המשחק מתחיל בעוד</div>
@@ -193,6 +197,7 @@
                         <div class="eyebrow">סיבוב</div>
                         <strong id="roundHeader">1 מתוך 4</strong>
                     </div>
+                    <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="progress-wrapper"><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div></div>
                 <div class="game-main">
@@ -223,6 +228,7 @@
                         <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
                         <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
                     </div>
+                    <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body share-body">
                     <div id="shareQuestion" class="share-question">איזו תשובה הפתיעה אתכם?</div>
@@ -251,6 +257,7 @@
                         <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
                         <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
                     </div>
+                    <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body finish-body">
                     <p id="finishRoundsText" class="finish-text">שוחקו 4 סיבובים.</p>
@@ -258,6 +265,71 @@
                     <div class="finish-actions">
                         <button id="playAgainButton" type="button" class="primary-button">שחזרו משחק</button>
                         <button id="anotherGameButton" type="button" class="secondary-button">משחק נוסף</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hostLobbyScreen" class="screen" aria-label="מסך חדר משחק דיגיטלי">
+            <div class="screen-shell centered-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">משחק דיגיטלי</div>
+                        <h1>קוד ההצטרפות שלכם</h1>
+                        <p class="screen-note">כל משתתף/ת נכנס/ת לקישור ומקליד/ה את הקוד הזה, במכשיר שלו/שלה</p>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                    </div>
+                    <div class="signature-slot signature-slot--inline"></div>
+                </header>
+                <div class="screen-body">
+                    <div class="room-code-box">
+                        <div id="roomCodeDisplay" class="room-code-value">------</div>
+                        <div id="roomJoinedCount" class="room-joined-count">ממתינים למשתתפים...</div>
+                    </div>
+                    <button id="startDigitalRoundButton" type="button" class="primary-button">התחילו את המשחק</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="joinScreen" class="screen" aria-label="מסך הצטרפות למשחק">
+            <div class="screen-shell centered-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">משחק דיגיטלי</div>
+                        <h1>הצטרפות למשחק</h1>
+                        <p class="screen-note">הקלידו את הקוד שקיבלתם מהמארח/ת</p>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                    </div>
+                    <div class="signature-slot signature-slot--inline"></div>
+                </header>
+                <div class="screen-body">
+                    <input id="joinCodeInput" class="join-code-input" type="text" inputmode="text" maxlength="5" placeholder="ABCDE" autocomplete="off" autocapitalize="characters" aria-label="קוד הצטרפות">
+                    <div id="joinErrorText" class="join-error hidden"></div>
+                    <button id="joinRoomButton" type="button" class="primary-button">הצטרפות</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="joinWaitingScreen" class="screen" aria-label="מסך המתנה למשחק">
+            <div class="screen-shell centered-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">משחק דיגיטלי</div>
+                        <h1>הצטרפתם בהצלחה!</h1>
+                        <p class="screen-note">ממתינים שהמארח/ת יתחיל/תתחיל את המשחק...</p>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                    </div>
+                    <div class="signature-slot signature-slot--inline"></div>
+                </header>
+                <div class="screen-body">
+                    <div class="room-code-box">
+                        <div id="joinedRoomCodeDisplay" class="room-code-value">------</div>
                     </div>
                 </div>
             </div>
@@ -320,5 +392,7 @@
     })();
 </script>
 <script src="script.js"></script>
+<script src="signature.js"></script>
+<script type="module" src="multiplayer.js"></script>
 </body>
 </html>
