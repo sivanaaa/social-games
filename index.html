@@ -212,6 +212,9 @@
                     <div class="game-right-panel">
                         <div class="category-board-title">קטגוריות</div>
                         <div class="category-grid" id="categoryGrid" role="grid" aria-label="10 קטגוריות למשחק"></div>
+                        <div id="digitalAnswersProgress" class="digital-answers-progress hidden"></div>
+                        <button id="digitalSubmitButton" type="button" class="primary-button hidden">שליחת תשובות</button>
+                        <div id="digitalSubmittedNote" class="digital-submitted-note hidden">התשובות נשלחו — ממתינים לשאר המשתתפים</div>
                     </div>
                 </div>
             </div>
@@ -241,6 +244,47 @@
                     <div id="shareCountdownRow" class="share-countdown-row hidden">
                         <span>הסיבוב הבא מתחיל בעוד</span>
                         <strong id="shareNextCountdown" class="share-next-countdown">3</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="revealScreen" class="screen" aria-label="מסך חשיפת תשובות">
+            <div class="screen-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">חושפים תשובות</div>
+                        <h1 id="revealCategoryText">קטגוריה</h1>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body">
+                    <div id="revealAnswersList" class="reveal-answers-list"></div>
+                    <button id="revealNextButton" type="button" class="primary-button hidden">הקטגוריה הבאה</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scoreboardScreen" class="screen" aria-label="מסך טבלת ניקוד">
+            <div class="screen-shell">
+                <header class="screen-topbar">
+                    <div class="screen-title-block">
+                        <div class="eyebrow">טבלת ניקוד</div>
+                        <h1>איך היה הסיבוב?</h1>
+                    </div>
+                    <div class="screen-actions">
+                        <button class="nav-button nav-home" type="button" data-action="home">מסך הבית</button>
+                        <button class="nav-button nav-exit" type="button" data-action="exit">יציאה מהמשחק</button>
+                    </div>
+                </header>
+                <div class="screen-body">
+                    <div id="scoreboardList" class="scoreboard-list"></div>
+                    <div id="scoreboardHostActions" class="scoreboard-host-actions hidden">
+                        <button id="nextRoundButton" type="button" class="primary-button">סבב נוסף</button>
+                        <button id="endGameButton" type="button" class="secondary-button">סיום המשחק</button>
                     </div>
                 </div>
             </div>
@@ -284,6 +328,7 @@
                     <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body">
+                    <input id="hostNameInput" class="name-input" type="text" maxlength="24" placeholder="השם שלך" autocomplete="off" aria-label="השם שלך">
                     <div class="room-code-box">
                         <div id="roomCodeDisplay" class="room-code-value">------</div>
                         <div id="roomJoinedCount" class="room-joined-count">ממתינים למשתתפים...</div>
@@ -307,6 +352,7 @@
                     <div class="signature-slot signature-slot--inline"></div>
                 </header>
                 <div class="screen-body">
+                    <input id="joinNameInput" class="name-input" type="text" maxlength="24" placeholder="השם שלך" autocomplete="off" aria-label="השם שלך">
                     <input id="joinCodeInput" class="join-code-input" type="text" inputmode="text" maxlength="5" placeholder="ABCDE" autocomplete="off" autocapitalize="characters" aria-label="קוד הצטרפות">
                     <div id="joinErrorText" class="join-error hidden"></div>
                     <button id="joinRoomButton" type="button" class="primary-button">הצטרפות</button>

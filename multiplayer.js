@@ -23,7 +23,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const WRITE_SECONDS = 90;
-const SHARE_SECONDS = 45;
 const COUNTDOWN_SECONDS = 3;
 const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O/1/I/L to avoid confusion
 
@@ -33,6 +32,9 @@ let unsubscribeRoom = null;
 let tickTimer = null;
 let hostTimer = null;
 let lastRenderedStatus = null;
+let latestRoomData = null;
+let myPlayerId = null;
+let hasSubmittedThisRound = false;
 
 function el(id) {
     return document.getElementById(id);
@@ -48,6 +50,21 @@ function generateRoomCode() {
         code += CODE_ALPHABET[Math.floor(Math.random() * CODE_ALPHABET.length)];
     }
     return code;
+}
+
+function getMyPlayerId() {
+    if (!myPlayerId) {
+        myPlayerId = (window.crypto && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : ("p" + Math.random().toString(36).slice(2) + Date.now());
+    }
+    return myPlayerId;
+}
+
+function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[ch]));
 }
 
 /* ---------------- Mode toggle (setup screen) ---------------- */
@@ -121,7 +138,14 @@ async function attemptJoin(code) {
         isHost = false;
         currentRoomCode = code;
         el("joinedRoomCodeDisplay").textContent = code;
-        updateDoc(roomRef(code), { joinedCount: increment(1) }).catch(() => {});
+        const nameInput = el("joinNameInput");
+        const name = (nameInput && nameInput.value.trim()) || `אורח/ת ${Math.floor(Math.random() * 900 + 100)}`;
+        const pid = getMyPlayerId();
+        updateDoc(roomRef(code), {
+            [`players.${pid}`]: name,
+            [`totalScores.${pid}`]: 0,
+            joinedCount: increment(1)
+        }).catch(() => {});
         listenToRoom(code);
     } catch (err) {
         console.error("Join failed", err);
@@ -154,6 +178,13 @@ window.startDigitalGame = async function startDigitalGame() {
         phaseEndsAt: null,
         playedLetters: [],
         joinedCount: 0,
+        players: {},
+        totalScores: {},
+        answers: {},
+        submitted: {},
+        bonusGiven: {},
+        revealIndex: 0,
+        lastRoundScores: {},
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     };
@@ -172,7 +203,17 @@ window.startDigitalGame = async function startDigitalGame() {
     listenToRoom(code);
 
     const startButton = el("startDigitalRoundButton");
-    startButton.onclick = () => hostBeginCountdown();
+    startButton.onclick = async () => {
+        const nameInput = el("hostNameInput");
+        const name = (nameInput && nameInput.value.trim()) || "מארח/ת";
+        const pid = getMyPlayerId();
+        await updateDoc(roomRef(currentRoomCode), {
+            [`players.${pid}`]: name,
+            [`totalScores.${pid}`]: 0,
+            updatedAt: serverTimestamp()
+        });
+        hostBeginCountdown();
+    };
 
     const codeBox = document.querySelector("#hostLobbyScreen .room-code-box");
     codeBox.onclick = () => {
@@ -224,33 +265,140 @@ async function hostRunRound(roundNumber) {
         phase: "writing",
         phaseEndsAt,
         playedLetters: [...(window.__digitalPlayedLetters || []), letter],
+        answers: {},
+        submitted: {},
+        bonusGiven: {},
+        revealIndex: 0,
         updatedAt: serverTimestamp()
     });
     window.__digitalPlayedLetters = [...(window.__digitalPlayedLetters || []), letter];
-    scheduleHostTransition(phaseEndsAt, () => hostRunSharePhase(roundNumber));
+    scheduleHostTransition(phaseEndsAt, () => hostRunReveal());
 }
 
-async function hostRunSharePhase(roundNumber) {
-    const phaseEndsAt = Date.now() + SHARE_SECONDS * 1000;
+async function hostRunReveal() {
     await updateDoc(roomRef(currentRoomCode), {
-        status: "sharing",
-        phase: "sharing",
-        phaseEndsAt,
+        status: "reveal",
+        phase: "reveal",
+        phaseEndsAt: null,
+        revealIndex: 0,
         updatedAt: serverTimestamp()
     });
-    scheduleHostTransition(phaseEndsAt, () => hostRunRound(roundNumber + 1));
 }
+
+function computeRoundScores(playerIds, categories, answers, bonusGiven) {
+    const scores = {};
+    playerIds.forEach((pid) => { scores[pid] = 0; });
+    categories.forEach((_, catIndex) => {
+        const valuesByPlayer = {};
+        playerIds.forEach((pid) => {
+            const raw = answers[pid] && answers[pid][catIndex];
+            valuesByPlayer[pid] = raw ? String(raw).trim() : "";
+        });
+        const counts = {};
+        playerIds.forEach((pid) => {
+            const v = valuesByPlayer[pid];
+            if (v) counts[v] = (counts[v] || 0) + 1;
+        });
+        playerIds.forEach((pid) => {
+            const v = valuesByPlayer[pid];
+            if (v) {
+                scores[pid] += 1;
+                if (counts[v] === 1) scores[pid] += 1;
+            }
+        });
+        const bonusPid = bonusGiven ? bonusGiven[String(catIndex)] : null;
+        if (bonusPid && scores[bonusPid] !== undefined) scores[bonusPid] += 1;
+    });
+    return scores;
+}
+
+async function hostAdvanceReveal() {
+    if (!isHost || !latestRoomData) return;
+    const categories = latestRoomData.categories || [];
+    const nextIndex = (latestRoomData.revealIndex || 0) + 1;
+    if (nextIndex >= categories.length) {
+        const playerIds = Object.keys(latestRoomData.players || {});
+        const roundScores = computeRoundScores(
+            playerIds,
+            categories,
+            latestRoomData.answers || {},
+            latestRoomData.bonusGiven || {}
+        );
+        const totalScores = { ...(latestRoomData.totalScores || {}) };
+        playerIds.forEach((pid) => {
+            totalScores[pid] = (totalScores[pid] || 0) + (roundScores[pid] || 0);
+        });
+        await updateDoc(roomRef(currentRoomCode), {
+            status: "scoreboard",
+            phase: null,
+            lastRoundScores: roundScores,
+            totalScores,
+            updatedAt: serverTimestamp()
+        });
+    } else {
+        await updateDoc(roomRef(currentRoomCode), {
+            revealIndex: nextIndex,
+            updatedAt: serverTimestamp()
+        });
+    }
+}
+
+async function hostToggleBonus(categoryIndex, playerId) {
+    if (!isHost || !latestRoomData) return;
+    const current = (latestRoomData.bonusGiven || {})[String(categoryIndex)];
+    const newValue = current === playerId ? null : playerId;
+    await updateDoc(roomRef(currentRoomCode), {
+        [`bonusGiven.${categoryIndex}`]: newValue,
+        updatedAt: serverTimestamp()
+    });
+}
+
+async function hostStartNextRound() {
+    if (!isHost || !latestRoomData) return;
+    hostRunRound((latestRoomData.currentRound || 0) + 1);
+}
+
+async function hostEndGame() {
+    if (!isHost) return;
+    await updateDoc(roomRef(currentRoomCode), {
+        status: "finished",
+        phase: null,
+        updatedAt: serverTimestamp()
+    });
+}
+
+let pendingHostTransition = null;
 
 function scheduleHostTransition(targetTime, callback) {
     if (hostTimer) clearInterval(hostTimer);
+    pendingHostTransition = { targetTime, callback };
     hostTimer = setInterval(() => {
         if (Date.now() >= targetTime) {
             clearInterval(hostTimer);
             hostTimer = null;
+            pendingHostTransition = null;
             callback();
         }
     }, 500);
 }
+
+// Backgrounded tabs throttle setInterval, which can delay the host's
+// scheduled transition well past its target time. Catch up immediately
+// once the tab is visible again instead of waiting on the throttled timer.
+function catchUpPendingHostTransition() {
+    if (!pendingHostTransition || document.hidden) return;
+    if (Date.now() >= pendingHostTransition.targetTime) {
+        const { callback } = pendingHostTransition;
+        if (hostTimer) {
+            clearInterval(hostTimer);
+            hostTimer = null;
+        }
+        pendingHostTransition = null;
+        callback();
+    }
+}
+
+document.addEventListener("visibilitychange", catchUpPendingHostTransition);
 
 /* ---------------- Shared rendering (host + participant) ---------------- */
 
@@ -276,6 +424,125 @@ function renderCategoriesInto(gridEl, categories) {
     gridEl.innerHTML = markup;
 }
 
+/* ---- Digital round: answer inputs (writing phase) ---- */
+
+function renderDigitalAnswerInputs(categories) {
+    const grid = window.dom.categoryGrid;
+    grid.classList.add("answer-list");
+    grid.innerHTML = (categories || []).map((category, index) => `
+        <div class="category-cell category-cell--input">
+            <span class="category-number">${index + 1}</span>
+            <span class="category-text">${escapeHtml(category)}</span>
+            <input type="text" dir="rtl" class="answer-input" data-category-index="${index}" placeholder="התשובה שלך...">
+        </div>
+    `).join("");
+    grid.querySelectorAll(".answer-input").forEach((input) => {
+        input.addEventListener("input", updateAnswerProgress);
+    });
+    updateAnswerProgress();
+}
+
+function getMyAnswerValues() {
+    return Array.from(document.querySelectorAll("#categoryGrid .answer-input"))
+        .sort((a, b) => Number(a.dataset.categoryIndex) - Number(b.dataset.categoryIndex))
+        .map((input) => input.value.trim());
+}
+
+function updateAnswerProgress() {
+    const inputs = document.querySelectorAll("#categoryGrid .answer-input");
+    const total = inputs.length;
+    const answered = Array.from(inputs).filter((input) => input.value.trim() !== "").length;
+    const progressEl = el("digitalAnswersProgress");
+    if (progressEl) progressEl.textContent = `ענית על ${answered} מתוך ${total}`;
+}
+
+function lockAnswerInputs() {
+    document.querySelectorAll("#categoryGrid .answer-input").forEach((input) => { input.disabled = true; });
+}
+
+function showAnswerControls() {
+    el("digitalAnswersProgress").classList.remove("hidden");
+    el("digitalSubmitButton").classList.remove("hidden");
+    el("digitalSubmittedNote").classList.add("hidden");
+}
+
+function showSubmittedNote() {
+    el("digitalAnswersProgress").classList.add("hidden");
+    el("digitalSubmitButton").classList.add("hidden");
+    el("digitalSubmittedNote").classList.remove("hidden");
+}
+
+async function finalizeMyAnswers() {
+    if (hasSubmittedThisRound) return;
+    hasSubmittedThisRound = true;
+    const values = getMyAnswerValues();
+    lockAnswerInputs();
+    showSubmittedNote();
+    try {
+        const pid = getMyPlayerId();
+        await updateDoc(roomRef(currentRoomCode), {
+            [`answers.${pid}`]: values,
+            [`submitted.${pid}`]: true,
+            updatedAt: serverTimestamp()
+        });
+    } catch (err) {
+        console.error("Failed to save answers", err);
+    }
+}
+
+/* ---- Digital round: reveal phase ---- */
+
+function renderRevealAnswers(data, index) {
+    const players = data.players || {};
+    const answers = data.answers || {};
+    const bonusGiven = data.bonusGiven || {};
+    const bonusPlayerId = bonusGiven[String(index)];
+    const listEl = el("revealAnswersList");
+    listEl.innerHTML = Object.keys(players).map((pid) => {
+        const name = players[pid];
+        const raw = answers[pid] && answers[pid][index];
+        const value = raw ? String(raw).trim() : "";
+        const answerText = value ? escapeHtml(value) : "לא נכתבה תשובה";
+        const hasBonus = bonusPlayerId === pid;
+        const bonusMarkup = isHost
+            ? `<button type="button" class="bonus-button${hasBonus ? " selected" : ""}" data-player-id="${pid}">בונוס יצירתי +1</button>`
+            : (hasBonus ? `<span class="bonus-badge">בונוס יצירתי +1</span>` : "");
+        return `
+            <div class="reveal-answer-row">
+                <div class="reveal-answer-name">${escapeHtml(name)}</div>
+                <div class="reveal-answer-text${value ? "" : " reveal-answer-empty"}">${answerText}</div>
+                ${bonusMarkup}
+            </div>
+        `;
+    }).join("");
+    if (isHost) {
+        listEl.querySelectorAll(".bonus-button").forEach((button) => {
+            button.addEventListener("click", () => hostToggleBonus(index, button.dataset.playerId));
+        });
+    }
+}
+
+/* ---- Digital round: scoreboard ---- */
+
+function renderScoreboard(data) {
+    const players = data.players || {};
+    const lastRoundScores = data.lastRoundScores || {};
+    const totalScores = data.totalScores || {};
+    const rows = Object.keys(players).map((pid) => ({
+        name: players[pid],
+        roundScore: lastRoundScores[pid] || 0,
+        totalScore: totalScores[pid] || 0
+    })).sort((a, b) => b.totalScore - a.totalScore);
+    const listEl = el("scoreboardList");
+    listEl.innerHTML = rows.map((row) => `
+        <div class="scoreboard-row">
+            <div class="scoreboard-name">${escapeHtml(row.name)}</div>
+            <div class="scoreboard-round-score">+${row.roundScore} הסיבוב</div>
+            <div class="scoreboard-total-score">${row.totalScore} סה"כ</div>
+        </div>
+    `).join("");
+}
+
 function startTicker(endsAt, onTick) {
     if (tickTimer) clearInterval(tickTimer);
     function tick() {
@@ -287,6 +554,7 @@ function startTicker(endsAt, onTick) {
 }
 
 function renderRoomState(data) {
+    latestRoomData = data;
     const dom = window.dom;
     const changedStatus = data.status !== lastRenderedStatus;
     lastRenderedStatus = data.status;
@@ -315,25 +583,41 @@ function renderRoomState(data) {
         if (changedStatus || dom.letterVisual.textContent !== data.selectedLetter) {
             dom.letterVisual.innerHTML = `<span>${data.selectedLetter}</span>`;
         }
-        if (changedStatus) renderCategoriesInto(dom.categoryGrid, data.categories);
+        if (changedStatus) {
+            hasSubmittedThisRound = false;
+            renderDigitalAnswerInputs(data.categories || []);
+            showAnswerControls();
+        }
         dom.timerLabel.textContent = "כותבים";
         dom.statusText.textContent = "כותבים תשובות";
         startTicker(data.phaseEndsAt, (remaining) => {
             dom.timerDisplay.textContent = window.formatTime(remaining);
             window.updateProgress(remaining, WRITE_SECONDS);
+            if (remaining <= 0) finalizeMyAnswers();
         });
         return;
     }
 
-    if (data.status === "sharing") {
-        window.switchScreen("shareScreen");
-        dom.sharePhaseText.textContent = data.currentRound === data.totalRounds
-            ? "סבב סוף: שתפו תשובה טובה."
-            : "שתפו תשובה אחת בקבוצה.";
-        dom.shareCountdownRow.classList.add("hidden");
-        startTicker(data.phaseEndsAt, (remaining) => {
-            el("shareTimerDisplay").textContent = String(remaining);
-        });
+    if (data.status === "reveal") {
+        if (tickTimer) clearInterval(tickTimer);
+        window.switchScreen("revealScreen");
+        const categories = data.categories || [];
+        const index = data.revealIndex || 0;
+        el("revealCategoryText").textContent = categories[index] || "";
+        renderRevealAnswers(data, index);
+        const nextButton = el("revealNextButton");
+        nextButton.classList.toggle("hidden", !isHost);
+        nextButton.onclick = () => hostAdvanceReveal();
+        return;
+    }
+
+    if (data.status === "scoreboard") {
+        window.switchScreen("scoreboardScreen");
+        renderScoreboard(data);
+        const hostActions = el("scoreboardHostActions");
+        hostActions.classList.toggle("hidden", !isHost);
+        el("nextRoundButton").onclick = () => hostStartNextRound();
+        el("endGameButton").onclick = () => hostEndGame();
         return;
     }
 
@@ -363,15 +647,24 @@ window.leaveDigitalGame = function leaveDigitalGame() {
         clearInterval(hostTimer);
         hostTimer = null;
     }
+    pendingHostTransition = null;
     const finishActions = document.querySelector("#finishScreen .finish-actions");
     if (finishActions) finishActions.classList.remove("hidden");
     currentRoomCode = null;
     isHost = false;
     lastRenderedStatus = null;
+    latestRoomData = null;
+    hasSubmittedThisRound = false;
     window.__digitalPlayedLetters = [];
 };
 
 /* ---------------- Init ---------------- */
 
+function initDigitalSubmitButton() {
+    const button = el("digitalSubmitButton");
+    if (button) button.addEventListener("click", () => finalizeMyAnswers());
+}
+
 initModeToggle();
 initJoinFlow();
+initDigitalSubmitButton();
