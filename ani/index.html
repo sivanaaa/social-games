@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>אני - משחק רגשי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +14,7 @@
 
   <header class="top-bar">
     <button id="backBtn" class="back-btn hidden">→ חזרה</button>
-    <h1 class="logo">אני <span>💛</span></h1>
+    <h1 class="logo">אני</h1>
   </header>
 
   <main>
@@ -20,19 +23,44 @@
       <p class="subtitle">בואו לגלות איך מרגישים, ומה עוזר כשקשה</p>
       <div class="stage-map">
         <button class="stage-card color-1" data-screen="breathing">
-          <span class="stage-icon">🌬️</span>
+          <span class="medallion">
+            <svg viewBox="0 0 40 40" class="icon-breathing">
+              <path d="M6 14 H23 a4 4 0 1 0 -4 -4" fill="none" stroke-width="3" stroke-linecap="round"></path>
+              <path d="M6 21 H29 a4 4 0 1 1 -4 4" fill="none" stroke-width="3" stroke-linecap="round"></path>
+              <path d="M6 28 H19" fill="none" stroke-width="3" stroke-linecap="round"></path>
+            </svg>
+          </span>
           <span class="stage-title">תרגילי נשימה</span>
         </button>
         <button class="stage-card color-2" data-screen="jokes">
-          <span class="stage-icon">😄</span>
+          <span class="medallion">
+            <svg viewBox="0 0 40 40" class="icon-jokes">
+              <path d="M8 10 h24 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 h-14 l-6 6 v-6 h-4 a4 4 0 0 1 -4 -4 v-10 a4 4 0 0 1 4 -4 Z"></path>
+              <circle cx="16" cy="19" r="1.6"></circle>
+              <circle cx="24" cy="19" r="1.6"></circle>
+              <path d="M14 23 Q20 28 26 23" fill="none" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </span>
           <span class="stage-title">בדיחות להפגת חרדה</span>
         </button>
         <button class="stage-card color-3" data-screen="sentences">
-          <span class="stage-icon">💬</span>
+          <span class="medallion">
+            <svg viewBox="0 0 40 40" class="icon-book">
+              <path d="M20 12 C16 9 10 9 6 11 v18 c4 -2 10 -2 14 1 c4 -3 10 -3 14 -1 v-18 c-4 -2 -10 -2 -14 1 Z"></path>
+              <path d="M20 12 v19" stroke-width="1.5"></path>
+              <path d="M9 15 h7 M9 19 h7 M9 23 h6" stroke-width="1.2" stroke-linecap="round"></path>
+              <path d="M24 15 h7 M24 19 h7 M25 23 h6" stroke-width="1.2" stroke-linecap="round"></path>
+            </svg>
+          </span>
           <span class="stage-title">משפטים שעוזרים</span>
         </button>
         <button class="stage-card color-4" data-screen="personal">
-          <span class="stage-icon">📓</span>
+          <span class="medallion">
+            <svg viewBox="0 0 40 40" class="icon-heart">
+              <path d="M20 30 C10 23 6 17 9 12 C11 8.5 16 8 20 12.5 C24 8 29 8.5 31 12 C34 17 30 23 20 30 Z"></path>
+              <path d="M20 12 l1.4 3 3 0.4 -2.2 2.1 0.6 3 -2.8 -1.5 -2.8 1.5 0.6 -3 -2.2 -2.1 3 -0.4 Z" opacity="0.9"></path>
+            </svg>
+          </span>
           <span class="stage-title">הפינה שלי</span>
         </button>
       </div>
@@ -44,12 +72,22 @@
         <p class="subtitle">שתי הצורות עוזרות להירגע - אפשר לנסות את שתיהן</p>
         <div class="choice-row">
           <button class="choice-card" data-pattern="triangle">
-            <span class="stage-icon">🔺</span>
-            <span>נשימת משולש</span>
+            <span class="medallion">
+              <svg viewBox="0 0 40 40" class="icon-triangle">
+                <path d="M20 8 L33 30 H7 Z" fill="none" stroke-width="3" stroke-linejoin="round"></path>
+                <circle cx="20" cy="8" r="2"></circle>
+              </svg>
+            </span>
+            <span class="choice-title">נשימת משולש</span>
           </button>
           <button class="choice-card" data-pattern="rectangle">
-            <span class="stage-icon">🟦</span>
-            <span>נשימת מלבן</span>
+            <span class="medallion">
+              <svg viewBox="0 0 40 40" class="icon-rect">
+                <rect x="8" y="10" width="24" height="20" rx="4" fill="none" stroke-width="3"></rect>
+                <circle cx="8" cy="10" r="2"></circle>
+              </svg>
+            </span>
+            <span class="choice-title">נשימת מלבן</span>
           </button>
         </div>
       </div>
@@ -58,25 +96,34 @@
         <div class="char-wrap">
           <svg id="breathChar" viewBox="0 0 200 200" class="phase-inhale">
             <defs>
-              <linearGradient id="gradApron" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ffd27a"></stop>
-                <stop offset="1" stop-color="#e8a13a"></stop>
+              <linearGradient id="gradApron" x1="0.15" y1="0" x2="0.9" y2="1">
+                <stop offset="0" stop-color="#a5424f"></stop>
+                <stop offset="0.55" stop-color="#8a2f3c"></stop>
+                <stop offset="1" stop-color="#661f2a"></stop>
               </linearGradient>
               <linearGradient id="gradBib" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#f28aa5"></stop>
-                <stop offset="1" stop-color="#dd5c85"></stop>
+                <stop offset="0" stop-color="#4bab94"></stop>
+                <stop offset="1" stop-color="#286b5a"></stop>
               </linearGradient>
               <radialGradient id="gradHead" cx="0.35" cy="0.3" r="0.8">
                 <stop offset="0" stop-color="#ffedd4"></stop>
-                <stop offset="1" stop-color="#f3c896"></stop>
+                <stop offset="1" stop-color="#f0bc85"></stop>
               </radialGradient>
               <linearGradient id="gradScarf" x1="0" y1="0" x2="0.3" y2="1">
                 <stop offset="0" stop-color="#fff8ec"></stop>
-                <stop offset="1" stop-color="#dccdb0"></stop>
+                <stop offset="1" stop-color="#d9c7a1"></stop>
               </linearGradient>
               <linearGradient id="gradPot" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#8fc79a"></stop>
-                <stop offset="1" stop-color="#4f8f5e"></stop>
+                <stop offset="0" stop-color="#6fae7c"></stop>
+                <stop offset="1" stop-color="#2f6b4f"></stop>
+              </linearGradient>
+              <linearGradient id="gradGoldTrim" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f4d597"></stop>
+                <stop offset="1" stop-color="#c98a35"></stop>
+              </linearGradient>
+              <linearGradient id="gradSleeve" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f0cd85"></stop>
+                <stop offset="1" stop-color="#c98a35"></stop>
               </linearGradient>
               <radialGradient id="gradPorridge" cx="0.4" cy="0.3" r="0.9">
                 <stop offset="0" stop-color="#fdedc0"></stop>
@@ -90,6 +137,13 @@
             <g id="torsoGroup">
               <ellipse id="charBody" cx="100" cy="124" rx="50" ry="38"></ellipse>
               <path id="apronBib" d="M84,96 h32 v20 q-16,8 -32,0 Z"></path>
+              <g class="bibDots">
+                <circle cx="92" cy="104" r="1.6"></circle>
+                <circle cx="106" cy="102" r="1.6"></circle>
+                <circle cx="88" cy="114" r="1.6"></circle>
+                <circle cx="102" cy="115" r="1.6"></circle>
+                <circle cx="112" cy="110" r="1.6"></circle>
+              </g>
             </g>
 
             <ellipse id="potRim" cx="100" cy="160" rx="46" ry="12"></ellipse>
@@ -162,7 +216,7 @@
     </section>
 
     <section id="screen-jokes" class="screen">
-      <h2>קצת צחוק תמיד עוזר 😄</h2>
+      <h2>קצת צחוק תמיד עוזר</h2>
       <div class="card-box" id="jokeBox"></div>
       <button id="nextJoke" class="primary-btn">בדיחה הבאה</button>
     </section>
