@@ -189,8 +189,8 @@ body {
 }
 .phase-inhale .steamWisps { opacity: 1; }
 .phase-inhale .wisp { stroke: #a9c8ec; stroke-width: 3.5; }
-.phase-hold .steamWisps { opacity: 0.75; }
-.phase-exhale .steamWisps { opacity: 0.15; }
+.phase-hold .steamWisps { opacity: 0.85; }
+.phase-exhale .steamWisps { opacity: 0.55; }
 
 /* סבתא - גוף וסינר */
 #torsoGroup {
@@ -274,6 +274,7 @@ body {
 
 .eye-white { fill: #fff; }
 .pupil { fill: #5c4030; }
+.eyelid { fill: url(#gradHead); }
 .eye-closed {
   stroke: #7a5a44;
   stroke-width: 2.6;
