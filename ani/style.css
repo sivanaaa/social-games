@@ -163,8 +163,8 @@ body {
 
 #potBody, #potRim {
   fill: url(#gradPot);
-  stroke: #7b7f8f;
-  stroke-width: 2.5;
+  stroke: #8a8378;
+  stroke-width: 2.2;
   stroke-linejoin: round;
 }
 #porridge { fill: url(#gradPorridge); stroke: #c9a55c; stroke-width: 1.5; }
@@ -202,8 +202,8 @@ body {
 .phase-hold #torsoGroup { transform: scale(1.17, 1.1); }
 .phase-exhale #torsoGroup { transform: scale(0.92, 0.95); }
 
-#charBody { fill: url(#gradApron); stroke: #2b2b3a; stroke-width: 3; }
-#apronBib { fill: url(#gradBib); stroke: #2b2b3a; stroke-width: 2.5; stroke-linejoin: round; }
+#charBody { fill: url(#gradApron); stroke: #5c4030; stroke-width: 2.5; }
+#apronBib { fill: url(#gradBib); stroke: #5c4030; stroke-width: 2.2; stroke-linejoin: round; }
 .arm-rest {
   stroke: #f0c090;
   stroke-width: 11;
@@ -241,14 +241,14 @@ body {
 }
 
 /* ראש, פנים ומטפחת */
-#charHead { fill: url(#gradHead); stroke: #2b2b3a; stroke-width: 3; }
-#headscarf { fill: url(#gradScarf); stroke: #2b2b3a; stroke-width: 3; stroke-linejoin: round; }
-#scarfKnot { fill: #b85670; stroke: #2b2b3a; stroke-width: 2; }
+#charHead { fill: url(#gradHead); stroke: #5c4030; stroke-width: 2.5; }
+#headscarf { fill: url(#gradScarf); stroke: #5c4030; stroke-width: 2.5; stroke-linejoin: round; }
+#scarfKnot { fill: #d94f8c; stroke: #5c4030; stroke-width: 2; }
 
 .glasses circle, .glasses path {
   fill: none;
-  stroke: #2b2b3a;
-  stroke-width: 2.5;
+  stroke: #d97b3f;
+  stroke-width: 2.2;
 }
 
 .eyebrows {
@@ -257,31 +257,31 @@ body {
   transform-origin: center;
 }
 .eyebrow {
-  stroke: #2b2b3a;
-  stroke-width: 3;
+  stroke: #8a5a3a;
+  stroke-width: 2.8;
   stroke-linecap: round;
 }
-.phase-hold .eyebrows { transform: translateY(-4px); }
+.phase-hold .eyebrows { transform: translateY(-3px); }
 .phase-exhale .eyebrows { transform: translateY(1px); }
 
 #nose { stroke: #d99a63; stroke-width: 2.5; stroke-linecap: round; }
 
 .cheek {
-  fill: #ffafcc;
-  opacity: 0;
+  fill: #ff8fb8;
+  opacity: 0.35;
   r: 9px;
   transition: all 0.6s ease;
   transform-box: fill-box;
   transform-origin: center;
 }
-.phase-inhale .cheek { opacity: 0.7; transform: scale(0.85); }
+.phase-inhale .cheek { opacity: 0.75; transform: scale(0.9); }
 .phase-hold .cheek { opacity: 1; transform: scale(1.4); }
-.phase-exhale .cheek { opacity: 0.4; transform: scale(0.6); }
+.phase-exhale .cheek { opacity: 0.55; transform: scale(0.7); }
 
 .eye-white { fill: #fff; }
-.pupil { fill: #2b2b3a; }
+.pupil { fill: #5c4030; }
 .eye-closed {
-  stroke: #2b2b3a;
+  stroke: #5c4030;
   stroke-width: 3;
   stroke-linecap: round;
   opacity: 0;
@@ -290,9 +290,9 @@ body {
 .phase-hold .eye { opacity: 0; }
 .phase-hold .eye-closed { opacity: 1; }
 
-.mouth { opacity: 0; fill: #2b2b3a; transition: opacity 0.3s ease; }
+.mouth { opacity: 0; fill: #a8452f; transition: opacity 0.3s ease; }
 .mouth-inhale, .mouth-exhale { rx: 5px; ry: 6px; }
-.mouth-hold { stroke: #2b2b3a; stroke-width: 3; stroke-linecap: round; }
+.mouth-hold { fill: none; stroke: #a8452f; stroke-width: 3.5; stroke-linecap: round; }
 .phase-inhale .mouth-inhale { opacity: 1; }
 .phase-hold .mouth-hold { opacity: 1; }
 .phase-exhale .mouth-exhale { opacity: 1; rx: 9px; ry: 8px; }
