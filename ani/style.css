@@ -134,7 +134,7 @@ body {
 .char-wrap {
   position: relative;
   width: 210px;
-  height: 210px;
+  height: 220px;
 }
 
 #breathChar {
@@ -143,60 +143,99 @@ body {
   overflow: visible;
 }
 
-#charBody {
-  fill: #8e7cff;
+/* סבתא - סיר ואש */
+.flame-shape {
+  fill: #ff9f43;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flameFlicker 0.6s ease-in-out infinite alternate;
+}
+.flame-shape-2 { fill: #ff6b35; animation-delay: 0.15s; }
+@keyframes flameFlicker {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(1.18); }
+}
+
+#potBody { fill: #b9bdc9; }
+#potRim { fill: #d8dbe3; stroke: #9fa3b0; stroke-width: 2; }
+#porridge { fill: #f6e2b3; }
+
+/* סבתא - גוף וסינר */
+#torsoGroup {
   transition: transform 4s ease-in-out;
   transform-box: fill-box;
   transform-origin: center;
 }
+.phase-inhale #torsoGroup { transform: scale(1.08, 1.04); }
+.phase-hold #torsoGroup { transform: scale(1.12, 1.07); }
+.phase-exhale #torsoGroup { transform: scale(0.95, 0.97); }
 
-.phase-inhale #charBody { transform: scale(1.16, 1.05); }
-.phase-hold #charBody { transform: scale(1.22, 1.1); }
-.phase-exhale #charBody { transform: scale(0.9, 0.94); }
-
-.char-arm path {
-  stroke: #6c5ce7;
+#charBody { fill: #f4a259; }
+#apronBib { fill: #e07a5f; }
+.arm-rest {
+  stroke: #f4a259;
   stroke-width: 11;
   stroke-linecap: round;
 }
 
-.char-arm {
+/* זרוע מערבבת עם כף */
+.arm-spoon {
+  transform-box: view-box;
+  transform-origin: 130px 112px;
   transition: transform 4s ease-in-out;
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
+}
+.arm-spoon-path {
+  stroke: #f4a259;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+.spoon-bowl { fill: #7a5230; }
+
+.phase-inhale .arm-spoon {
+  transform: rotate(0deg);
+  animation: stirWobble 0.9s ease-in-out infinite alternate;
+}
+.phase-hold .arm-spoon {
+  transform: rotate(-55deg) translate(-6px, -14px);
+  animation: none;
+}
+.phase-exhale .arm-spoon {
+  transform: rotate(-48deg) translate(-4px, -10px);
+  animation: none;
+}
+@keyframes stirWobble {
+  from { transform: rotate(-9deg); }
+  to { transform: rotate(9deg); }
 }
 
-.phase-inhale .arm-left { transform: rotate(-18deg); }
-.phase-inhale .arm-right { transform: rotate(18deg); }
-.phase-hold .arm-left,
-.phase-hold .arm-right {
-  animation: armShake 0.25s infinite alternate;
-}
-.phase-exhale .arm-left { transform: rotate(10deg) translateY(8px); }
-.phase-exhale .arm-right { transform: rotate(-10deg) translateY(8px); }
+/* ראש, פנים ומטפחת */
+#charHead { fill: #ffd9b3; }
+#headscarf { fill: #d46a86; }
+#scarfKnot { fill: #b85670; }
 
-@keyframes armShake {
-  from { transform: rotate(-16deg); }
-  to { transform: rotate(-20deg); }
+.glasses circle, .glasses path {
+  fill: none;
+  stroke: #2b2b3a;
+  stroke-width: 2.5;
 }
 
 .cheek {
   fill: #ffafcc;
   opacity: 0;
-  r: 13px;
+  r: 9px;
   transition: all 0.6s ease;
   transform-box: fill-box;
   transform-origin: center;
 }
-.phase-inhale .cheek { opacity: 0.9; transform: scale(0.85); }
-.phase-hold .cheek { opacity: 1; transform: scale(1.3); }
-.phase-exhale .cheek { opacity: 0; transform: scale(0.5); }
+.phase-inhale .cheek { opacity: 0.7; transform: scale(0.85); }
+.phase-hold .cheek { opacity: 1; transform: scale(1.35); }
+.phase-exhale .cheek { opacity: 0.4; transform: scale(0.6); }
 
 .eye-white { fill: #fff; }
 .pupil { fill: #2b2b3a; }
 .eye-closed {
   stroke: #2b2b3a;
-  stroke-width: 4;
+  stroke-width: 3;
   stroke-linecap: round;
   opacity: 0;
 }
@@ -205,22 +244,11 @@ body {
 .phase-hold .eye-closed { opacity: 1; }
 
 .mouth { opacity: 0; fill: #2b2b3a; transition: opacity 0.3s ease; }
-.mouth-inhale, .mouth-exhale { rx: 9px; ry: 11px; }
-.mouth-hold { stroke: #2b2b3a; stroke-width: 5; stroke-linecap: round; }
+.mouth-inhale, .mouth-exhale { rx: 5px; ry: 6px; }
+.mouth-hold { stroke: #2b2b3a; stroke-width: 3; stroke-linecap: round; }
 .phase-inhale .mouth-inhale { opacity: 1; }
 .phase-hold .mouth-hold { opacity: 1; }
-.phase-exhale .mouth-exhale { opacity: 1; rx: 15px; ry: 14px; }
-
-.accessory { opacity: 0; transition: opacity 0.3s ease; }
-.accessory-triangle rect,
-.accessory-triangle path {
-  fill: #2b2b3a;
-  stroke: #2b2b3a;
-}
-.accessory-triangle path { fill: none; stroke-width: 8; }
-.accessory-rectangle circle { fill: #ff5c5c; }
-.pattern-triangle .accessory-triangle { opacity: 1; }
-.pattern-rectangle .accessory-rectangle { opacity: 1; }
+.phase-exhale .mouth-exhale { opacity: 1; rx: 9px; ry: 8px; }
 
 .particles {
   position: absolute;
@@ -231,13 +259,13 @@ body {
 
 .puff {
   position: absolute;
-  font-size: 1.3rem;
-  animation: puffAway 1.1s ease-out forwards;
+  font-size: 1.2rem;
+  animation: puffAway 1.3s ease-out forwards;
 }
 
 @keyframes puffAway {
   from { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
-  to { transform: translate(var(--dx), -46px) scale(1.1); opacity: 0; }
+  to { transform: translate(var(--dx), var(--dy, -40px)) scale(1.1); opacity: 0; }
 }
 
 #breathCaption {

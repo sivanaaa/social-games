@@ -57,22 +57,22 @@ const PHASE_SECONDS = 4;
 
 const CAPTIONS = {
   inhale: [
-    'כמו שאתם שואפים ריח של פיצה טרייה מהתנור 🍕',
-    'שאפו כמו שאתם שואפים את הבאס במסיבה 🔊',
-    'תמלאו אוויר כמו שממלאים סטורי בלי לחשוב פעמיים 📱',
-    'שאפו כאילו זה הריח של האוכל של אמא כשנכנסים הביתה 🍜'
+    'סבתא שואפת עמוק... איזה ריח דייסה משגע 🥣',
+    'סבתא מערבבת בסיר ושואפת את הניחוח המתוק 😌',
+    'שאיפה עמוקה, בדיוק כמו שסבתא נהנית מהריח שעולה מהסיר 🍯',
+    'שואפים כמו שסבתא שואפת את ריח הקינמון בדייסה 🍂'
   ],
   hold: [
-    'תחזיקו כמו שמחזיקים צחוק באמצע שיעור 🤐',
-    'קפאו כמו כשהמורה שואלת "מי לא הכין שיעורים?" 😳',
-    'תחזיקו חזק, כמו שמחזיקים סוד ממש שווה 🤫',
-    'עצרו הכל, בדיוק כמו כשהווידאו טוען וקופא 🌀'
+    'סבתא מקפיאה את הכף באוויר... עוד רגע טועמת 🤫',
+    'סבתא בודקת: "רגע, זה כבר מוכן?" ומחכה בלי לזוז 🧐',
+    'תחזיקו כמו שסבתא מחזיקה את הכף לפני שהיא טועמת 🥄',
+    'רגע של מתח... הדייסה בסיר, וסבתא מחכה שתתקרר קצת 🔥'
   ],
   exhale: [
-    'שחררו הכל, כמו שמשחררים דעה בקבוצת וואטסאפ 😤',
-    'נשפו כמו שנושפים על נרות יום הולדת (בלי לכבות את כל השכנים) 🎂',
-    'תנו לזה לצאת כמו אנחה אחרי מבחן שהסתיים 😮‍💨',
-    'תשפו את זה כמו שמשחררים סטרס אחרי שהגשתם עבודה 🎉'
+    'סבתא נושפת חזק על הכף החמה, לא רוצים לשרוף את הלשון! 💨',
+    'נשיפה ארוכה על הדייסה הרותחת, בדיוק כמו סבתא 😮‍💨',
+    'תנשפו את זה כמו שסבתא מצננת את הדייסה לפני שהיא טועמת 🥣',
+    'נשפו לאט, כמו שסבתא מצננת כפית אחרי כפית 💨'
   ]
 };
 let lastCaption = {};
@@ -85,19 +85,19 @@ function pickCaption(type) {
   return pool[idx];
 }
 
-function spawnPuffs() {
+function spawnParticles(emoji, x, y, dxRange, dy) {
   charParticles.innerHTML = '';
-  const emojis = ['💨', '✨', '💨'];
-  emojis.forEach((emoji, i) => {
+  for (let i = 0; i < 3; i++) {
     const span = document.createElement('span');
     span.className = 'puff';
     span.textContent = emoji;
-    span.style.left = 90 + i * 15 + 'px';
-    span.style.top = '135px';
-    span.style.setProperty('--dx', (i - 1) * 30 + 'px');
+    span.style.left = x + i * 12 + 'px';
+    span.style.top = y + 'px';
+    span.style.setProperty('--dx', (i - 1) * dxRange + 'px');
+    span.style.setProperty('--dy', dy + 'px');
     span.style.animationDelay = i * 0.15 + 's';
     charParticles.appendChild(span);
-  });
+  }
 }
 
 let breathTimer = null;
@@ -111,8 +111,6 @@ breathStopBtn.addEventListener('click', stopBreathing);
 function startBreathing(patternName) {
   const pattern = PATTERNS[patternName];
   breathShape.setAttribute('points', pattern.points.map(p => p.join(',')).join(' '));
-  breathChar.classList.remove('pattern-triangle', 'pattern-rectangle');
-  breathChar.classList.add('pattern-' + patternName);
   breathingSelectEl.classList.add('hidden');
   breathingPlayEl.classList.remove('hidden');
 
@@ -125,7 +123,8 @@ function startBreathing(patternName) {
     breathCaption.textContent = pickCaption(phase.type);
     breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
     breathChar.classList.add('phase-' + phase.type);
-    if (phase.type === 'exhale') spawnPuffs();
+    if (phase.type === 'hold') spawnParticles('♨️', 92, 158, 14, -34);
+    if (phase.type === 'exhale') spawnParticles('💨', 96, 90, 26, -18);
     phaseStart = performance.now();
 
     let secondsLeft = PHASE_SECONDS;
