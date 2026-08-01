@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אני - משחק רגשי</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="top-bar">
+    <button id="backBtn" class="back-btn hidden">→ חזרה</button>
+    <h1 class="logo">אני <span>💛</span></h1>
+  </header>
+
+  <main>
+
+    <section id="screen-home" class="screen active">
+      <p class="subtitle">בואו לגלות איך מרגישים, ומה עוזר כשקשה</p>
+      <div class="stage-map">
+        <button class="stage-card color-1" data-screen="breathing">
+          <span class="stage-icon">🌬️</span>
+          <span class="stage-title">תרגילי נשימה</span>
+        </button>
+        <button class="stage-card color-2" data-screen="jokes">
+          <span class="stage-icon">😄</span>
+          <span class="stage-title">בדיחות להפגת חרדה</span>
+        </button>
+        <button class="stage-card color-3" data-screen="sentences">
+          <span class="stage-icon">💬</span>
+          <span class="stage-title">משפטים שעוזרים</span>
+        </button>
+        <button class="stage-card color-4" data-screen="personal">
+          <span class="stage-icon">📓</span>
+          <span class="stage-title">הפינה שלי</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="screen-breathing" class="screen">
+      <div id="breathing-select">
+        <h2>איזו נשימה בא לך לנסות?</h2>
+        <p class="subtitle">שתי הצורות עוזרות להירגע - אפשר לנסות את שתיהן</p>
+        <div class="choice-row">
+          <button class="choice-card" data-pattern="triangle">
+            <span class="stage-icon">🔺</span>
+            <span>נשימת משולש</span>
+          </button>
+          <button class="choice-card" data-pattern="rectangle">
+            <span class="stage-icon">🟦</span>
+            <span>נשימת מלבן</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="breathing-play" class="hidden">
+        <div id="breathMascot">🎈</div>
+        <svg id="breathSvg" viewBox="0 0 200 200">
+          <polygon id="breathShape" class="breath-shape" points=""></polygon>
+          <circle id="breathDot" class="breath-dot" r="7"></circle>
+        </svg>
+        <div id="breathLabel">שאפו אוויר</div>
+        <div id="breathCount">4</div>
+        <button id="breathStop" class="secondary-btn">סיימתי, חזרה לבחירה</button>
+      </div>
+    </section>
+
+    <section id="screen-jokes" class="screen">
+      <h2>קצת צחוק תמיד עוזר 😄</h2>
+      <div class="card-box" id="jokeBox"></div>
+      <button id="nextJoke" class="primary-btn">בדיחה הבאה</button>
+    </section>
+
+    <section id="screen-sentences" class="screen">
+      <h2>משפטים שכדאי לזכור</h2>
+      <div class="card-box" id="sentenceBox"></div>
+      <button id="nextSentence" class="primary-btn">משפט נוסף</button>
+    </section>
+
+    <section id="screen-personal" class="screen">
+      <h2>הפינה שלי</h2>
+      <p class="subtitle">איך אני מרגיש/ה עכשיו?</p>
+      <div class="mood-row" id="moodRow"></div>
+      <textarea id="personalText" placeholder="אפשר לכתוב כאן כל מה שבא לך... זה נשאר רק אצלך, על המכשיר שלך"></textarea>
+      <button id="saveEntry" class="primary-btn">שמירה</button>
+      <div id="entriesList"></div>
+    </section>
+
+  </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
