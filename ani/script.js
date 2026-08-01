@@ -27,8 +27,10 @@ const breathingSelectEl = document.getElementById('breathing-select');
 const breathingPlayEl = document.getElementById('breathing-play');
 const breathShape = document.getElementById('breathShape');
 const breathDot = document.getElementById('breathDot');
-const breathMascot = document.getElementById('breathMascot');
+const breathChar = document.getElementById('breathChar');
+const charParticles = document.getElementById('charParticles');
 const breathLabel = document.getElementById('breathLabel');
+const breathCaption = document.getElementById('breathCaption');
 const breathCount = document.getElementById('breathCount');
 const breathStopBtn = document.getElementById('breathStop');
 
@@ -36,22 +38,67 @@ const PATTERNS = {
   triangle: {
     points: [[100, 20], [180, 170], [20, 170]],
     phases: [
-      { label: 'שאפו אוויר, כמו שמנפחים בלון 🎈', scale: 1.3 },
-      { label: 'החזיקו רגע...', scale: 1.3 },
-      { label: 'נשפו לאט לאט', scale: 0.85 }
+      { type: 'inhale', label: 'שאפו אוויר' },
+      { type: 'hold', label: 'החזיקו רגע...' },
+      { type: 'exhale', label: 'נשפו לאט לאט' }
     ]
   },
   rectangle: {
     points: [[30, 30], [170, 30], [170, 170], [30, 170]],
     phases: [
-      { label: 'שאפו אוויר, כמו שמנפחים בלון 🎈', scale: 1.3 },
-      { label: 'החזיקו רגע...', scale: 1.3 },
-      { label: 'נשפו לאט לאט', scale: 0.85 },
-      { label: 'החזיקו רגע...', scale: 0.85 }
+      { type: 'inhale', label: 'שאפו אוויר' },
+      { type: 'hold', label: 'החזיקו רגע...' },
+      { type: 'exhale', label: 'נשפו לאט לאט' },
+      { type: 'hold', label: 'החזיקו רגע...' }
     ]
   }
 };
 const PHASE_SECONDS = 4;
+
+const CAPTIONS = {
+  inhale: [
+    'כמו שאתם שואפים ריח של פיצה טרייה מהתנור 🍕',
+    'שאפו כמו שאתם שואפים את הבאס במסיבה 🔊',
+    'תמלאו אוויר כמו שממלאים סטורי בלי לחשוב פעמיים 📱',
+    'שאפו כאילו זה הריח של האוכל של אמא כשנכנסים הביתה 🍜'
+  ],
+  hold: [
+    'תחזיקו כמו שמחזיקים צחוק באמצע שיעור 🤐',
+    'קפאו כמו כשהמורה שואלת "מי לא הכין שיעורים?" 😳',
+    'תחזיקו חזק, כמו שמחזיקים סוד ממש שווה 🤫',
+    'עצרו הכל, בדיוק כמו כשהווידאו טוען וקופא 🌀'
+  ],
+  exhale: [
+    'שחררו הכל, כמו שמשחררים דעה בקבוצת וואטסאפ 😤',
+    'נשפו כמו שנושפים על נרות יום הולדת (בלי לכבות את כל השכנים) 🎂',
+    'תנו לזה לצאת כמו אנחה אחרי מבחן שהסתיים 😮‍💨',
+    'תשפו את זה כמו שמשחררים סטרס אחרי שהגשתם עבודה 🎉'
+  ]
+};
+let lastCaption = {};
+
+function pickCaption(type) {
+  const pool = CAPTIONS[type];
+  let idx;
+  do { idx = Math.floor(Math.random() * pool.length); } while (idx === lastCaption[type] && pool.length > 1);
+  lastCaption[type] = idx;
+  return pool[idx];
+}
+
+function spawnPuffs() {
+  charParticles.innerHTML = '';
+  const emojis = ['💨', '✨', '💨'];
+  emojis.forEach((emoji, i) => {
+    const span = document.createElement('span');
+    span.className = 'puff';
+    span.textContent = emoji;
+    span.style.left = 90 + i * 15 + 'px';
+    span.style.top = '135px';
+    span.style.setProperty('--dx', (i - 1) * 30 + 'px');
+    span.style.animationDelay = i * 0.15 + 's';
+    charParticles.appendChild(span);
+  });
+}
 
 let breathTimer = null;
 let breathFrame = null;
@@ -64,6 +111,8 @@ breathStopBtn.addEventListener('click', stopBreathing);
 function startBreathing(patternName) {
   const pattern = PATTERNS[patternName];
   breathShape.setAttribute('points', pattern.points.map(p => p.join(',')).join(' '));
+  breathChar.classList.remove('pattern-triangle', 'pattern-rectangle');
+  breathChar.classList.add('pattern-' + patternName);
   breathingSelectEl.classList.add('hidden');
   breathingPlayEl.classList.remove('hidden');
 
@@ -73,8 +122,10 @@ function startBreathing(patternName) {
   function runPhase() {
     const phase = pattern.phases[phaseIndex];
     breathLabel.textContent = phase.label;
-    breathMascot.style.transition = `transform ${PHASE_SECONDS}s ease-in-out`;
-    breathMascot.style.transform = `scale(${phase.scale})`;
+    breathCaption.textContent = pickCaption(phase.type);
+    breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+    breathChar.classList.add('phase-' + phase.type);
+    if (phase.type === 'exhale') spawnPuffs();
     phaseStart = performance.now();
 
     let secondsLeft = PHASE_SECONDS;
@@ -110,7 +161,8 @@ function startBreathing(patternName) {
 function stopBreathing() {
   clearInterval(breathTimer);
   cancelAnimationFrame(breathFrame);
-  breathMascot.style.transform = 'scale(1)';
+  charParticles.innerHTML = '';
+  breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
   breathingPlayEl.classList.add('hidden');
   breathingSelectEl.classList.remove('hidden');
 }

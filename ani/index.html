@@ -55,12 +55,47 @@
       </div>
 
       <div id="breathing-play" class="hidden">
-        <div id="breathMascot">🎈</div>
-        <svg id="breathSvg" viewBox="0 0 200 200">
+        <div class="char-wrap">
+          <svg id="breathChar" viewBox="0 0 200 200" class="pattern-triangle phase-inhale">
+            <g class="char-arm arm-left">
+              <path d="M60,125 Q28,105 22,68" fill="none"/>
+            </g>
+            <g class="char-arm arm-right">
+              <path d="M140,125 Q172,105 178,68" fill="none"/>
+            </g>
+            <g class="accessory accessory-rectangle">
+              <circle cx="20" cy="63" r="17"></circle>
+              <circle cx="180" cy="63" r="17"></circle>
+            </g>
+            <ellipse id="charBody" cx="100" cy="122" rx="55" ry="50"></ellipse>
+            <circle class="cheek cheek-left" cx="63" cy="130"></circle>
+            <circle class="cheek cheek-right" cx="137" cy="130"></circle>
+            <g class="accessory accessory-triangle">
+              <rect x="53" y="76" width="94" height="15" rx="7"></rect>
+              <path d="M147,84 q22,4 17,27" fill="none"></path>
+            </g>
+            <g class="eye eye-left">
+              <circle cx="80" cy="112" r="12" class="eye-white"></circle>
+              <circle cx="80" cy="112" r="5" class="pupil"></circle>
+            </g>
+            <g class="eye eye-right">
+              <circle cx="120" cy="112" r="12" class="eye-white"></circle>
+              <circle cx="120" cy="112" r="5" class="pupil"></circle>
+            </g>
+            <path class="eye-closed eye-closed-left" d="M70,112 q10,-9 20,0" fill="none"></path>
+            <path class="eye-closed eye-closed-right" d="M110,112 q10,-9 20,0" fill="none"></path>
+            <ellipse class="mouth mouth-inhale" cx="100" cy="140"></ellipse>
+            <path class="mouth mouth-hold" d="M84,140 h32" fill="none"></path>
+            <ellipse class="mouth mouth-exhale" cx="100" cy="142"></ellipse>
+          </svg>
+          <div id="charParticles" class="particles"></div>
+        </div>
+        <svg id="breathSvg" class="guide-svg" viewBox="0 0 200 200">
           <polygon id="breathShape" class="breath-shape" points=""></polygon>
           <circle id="breathDot" class="breath-dot" r="7"></circle>
         </svg>
         <div id="breathLabel">שאפו אוויר</div>
+        <div id="breathCaption"></div>
         <div id="breathCount">4</div>
         <button id="breathStop" class="secondary-btn">סיימתי, חזרה לבחירה</button>
       </div>
