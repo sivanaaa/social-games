@@ -173,7 +173,7 @@ body {
 #charBody { fill: #f4a259; }
 #apronBib { fill: #e07a5f; }
 .arm-rest {
-  stroke: #f4a259;
+  stroke: #ffd9b3;
   stroke-width: 11;
   stroke-linecap: round;
 }
@@ -181,11 +181,11 @@ body {
 /* זרוע מערבבת עם כף */
 .arm-spoon {
   transform-box: view-box;
-  transform-origin: 130px 112px;
+  transform-origin: 128px 104px;
   transition: transform 4s ease-in-out;
 }
 .arm-spoon-path {
-  stroke: #f4a259;
+  stroke: #ffd9b3;
   stroke-width: 11;
   stroke-linecap: round;
 }

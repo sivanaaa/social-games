@@ -123,8 +123,8 @@ function startBreathing(patternName) {
     breathCaption.textContent = pickCaption(phase.type);
     breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
     breathChar.classList.add('phase-' + phase.type);
-    if (phase.type === 'hold') spawnParticles('♨️', 92, 158, 14, -34);
-    if (phase.type === 'exhale') spawnParticles('💨', 96, 90, 26, -18);
+    if (phase.type === 'hold') spawnParticles('♨️', 90, 146, 14, -34);
+    if (phase.type === 'exhale') spawnParticles('💨', 94, 76, 26, -18);
     phaseStart = performance.now();
 
     let secondsLeft = PHASE_SECONDS;
