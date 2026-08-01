@@ -243,13 +243,7 @@ body {
 /* ראש, פנים ומטפחת */
 #charHead { fill: url(#gradHead); stroke: #5c4030; stroke-width: 2.5; }
 #headscarf { fill: url(#gradScarf); stroke: #5c4030; stroke-width: 2.5; stroke-linejoin: round; }
-#scarfKnot { fill: #d94f8c; stroke: #5c4030; stroke-width: 2; }
-
-.glasses circle, .glasses path {
-  fill: none;
-  stroke: #d97b3f;
-  stroke-width: 2.2;
-}
+.scarfTrim circle { fill: #c9784a; r: 2.4px; }
 
 .eyebrows {
   transition: transform 4s ease-in-out;
@@ -269,7 +263,7 @@ body {
 .cheek {
   fill: #ff8fb8;
   opacity: 0.35;
-  r: 9px;
+  r: 10px;
   transition: all 0.6s ease;
   transform-box: fill-box;
   transform-origin: center;
