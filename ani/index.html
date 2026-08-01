@@ -57,27 +57,71 @@
       <div id="breathing-play" class="hidden">
         <div class="char-wrap">
           <svg id="breathChar" viewBox="0 0 200 200" class="phase-inhale">
+            <defs>
+              <linearGradient id="gradApron" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffc17e"></stop>
+                <stop offset="1" stop-color="#e2823f"></stop>
+              </linearGradient>
+              <linearGradient id="gradBib" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f2977f"></stop>
+                <stop offset="1" stop-color="#d1604a"></stop>
+              </linearGradient>
+              <radialGradient id="gradHead" cx="0.35" cy="0.3" r="0.8">
+                <stop offset="0" stop-color="#ffe6c4"></stop>
+                <stop offset="1" stop-color="#f0bd8c"></stop>
+              </radialGradient>
+              <linearGradient id="gradScarf" x1="0" y1="0" x2="0.3" y2="1">
+                <stop offset="0" stop-color="#e893ac"></stop>
+                <stop offset="1" stop-color="#c05a78"></stop>
+              </linearGradient>
+              <linearGradient id="gradPot" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#eef0f6"></stop>
+                <stop offset="1" stop-color="#a3a8ba"></stop>
+              </linearGradient>
+              <radialGradient id="gradPorridge" cx="0.4" cy="0.3" r="0.9">
+                <stop offset="0" stop-color="#fdedc0"></stop>
+                <stop offset="1" stop-color="#e7c377"></stop>
+              </radialGradient>
+            </defs>
+
+            <ellipse id="groundShadow" cx="100" cy="197" rx="50" ry="6"></ellipse>
+
             <path class="arm-rest" d="M70,112 Q54,124 58,142" fill="none"></path>
             <g id="torsoGroup">
               <ellipse id="charBody" cx="100" cy="124" rx="50" ry="38"></ellipse>
               <path id="apronBib" d="M84,96 h32 v20 q-16,8 -32,0 Z"></path>
             </g>
+
             <ellipse id="potRim" cx="100" cy="160" rx="46" ry="12"></ellipse>
             <path id="potBody" d="M54,160 Q54,190 100,190 Q146,190 146,160 Z"></path>
             <ellipse id="porridge" cx="100" cy="158" rx="39" ry="8"></ellipse>
+
+            <g class="steamWisps">
+              <g class="wisp-pos" transform="translate(85,150)"><path class="wisp" d="M-4,0 Q0,-10 -4,-20 Q-8,-30 -4,-40" fill="none"></path></g>
+              <g class="wisp-pos" transform="translate(100,146)"><path class="wisp" d="M-4,0 Q0,-10 -4,-20 Q-8,-30 -4,-40" fill="none"></path></g>
+              <g class="wisp-pos" transform="translate(115,150)"><path class="wisp" d="M-4,0 Q0,-10 -4,-20 Q-8,-30 -4,-40" fill="none"></path></g>
+            </g>
+
             <g class="flame">
               <path class="flame-shape" d="M90,200 q4,-12 10,-12 q6,0 10,12 q-10,5 -20,0 Z"></path>
               <path class="flame-shape flame-shape-2" d="M108,200 q3,-9 8,-9 q5,0 8,9 q-8,4 -16,0 Z"></path>
             </g>
+
             <g class="arm-spoon">
               <path class="arm-spoon-path" d="M128,104 Q118,132 102,160" fill="none"></path>
               <ellipse class="spoon-bowl" cx="100" cy="162" rx="8" ry="5"></ellipse>
             </g>
+
             <circle id="charHead" cx="100" cy="62" r="30"></circle>
             <circle class="cheek cheek-left" cx="78" cy="70"></circle>
             <circle class="cheek cheek-right" cx="122" cy="70"></circle>
             <path id="headscarf" d="M66,74 Q66,10 100,10 Q134,10 134,74 Q116,44 100,40 Q84,44 66,74 Z"></path>
             <path id="scarfKnot" d="M134,50 q16,4 12,24 q-9,-4 -12,-24 Z"></path>
+
+            <g class="eyebrows">
+              <path class="eyebrow eyebrow-left" d="M80,48 q8,-5 16,0" fill="none"></path>
+              <path class="eyebrow eyebrow-right" d="M104,48 q8,-5 16,0" fill="none"></path>
+            </g>
             <g class="glasses">
               <circle cx="88" cy="58" r="10"></circle>
               <circle cx="112" cy="58" r="10"></circle>
@@ -93,11 +137,17 @@
             </g>
             <path class="eye-closed eye-closed-left" d="M80,58 q8,-7 16,0" fill="none"></path>
             <path class="eye-closed eye-closed-right" d="M104,58 q8,-7 16,0" fill="none"></path>
+            <path id="nose" d="M97,64 Q100,71 104,64" fill="none"></path>
             <ellipse class="mouth mouth-inhale" cx="100" cy="76"></ellipse>
             <path class="mouth mouth-hold" d="M92,76 h16" fill="none"></path>
             <ellipse class="mouth mouth-exhale" cx="100" cy="78"></ellipse>
+
+            <g class="breathLines">
+              <g class="bl-pos" transform="translate(108,70) rotate(-14)"><path class="breath-line" d="M0,0 Q8,-3 16,0" fill="none"></path></g>
+              <g class="bl-pos" transform="translate(111,78) rotate(-2)"><path class="breath-line" d="M0,0 Q8,-3 16,0" fill="none"></path></g>
+              <g class="bl-pos" transform="translate(108,86) rotate(10)"><path class="breath-line" d="M0,0 Q8,-3 16,0" fill="none"></path></g>
+            </g>
           </svg>
-          <div id="charParticles" class="particles"></div>
         </div>
         <svg id="breathSvg" class="guide-svg" viewBox="0 0 200 200">
           <polygon id="breathShape" class="breath-shape" points=""></polygon>

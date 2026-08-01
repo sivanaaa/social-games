@@ -28,7 +28,6 @@ const breathingPlayEl = document.getElementById('breathing-play');
 const breathShape = document.getElementById('breathShape');
 const breathDot = document.getElementById('breathDot');
 const breathChar = document.getElementById('breathChar');
-const charParticles = document.getElementById('charParticles');
 const breathLabel = document.getElementById('breathLabel');
 const breathCaption = document.getElementById('breathCaption');
 const breathCount = document.getElementById('breathCount');
@@ -85,21 +84,6 @@ function pickCaption(type) {
   return pool[idx];
 }
 
-function spawnParticles(emoji, x, y, dxRange, dy) {
-  charParticles.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
-    const span = document.createElement('span');
-    span.className = 'puff';
-    span.textContent = emoji;
-    span.style.left = x + i * 12 + 'px';
-    span.style.top = y + 'px';
-    span.style.setProperty('--dx', (i - 1) * dxRange + 'px');
-    span.style.setProperty('--dy', dy + 'px');
-    span.style.animationDelay = i * 0.15 + 's';
-    charParticles.appendChild(span);
-  }
-}
-
 let breathTimer = null;
 let breathFrame = null;
 
@@ -123,8 +107,6 @@ function startBreathing(patternName) {
     breathCaption.textContent = pickCaption(phase.type);
     breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
     breathChar.classList.add('phase-' + phase.type);
-    if (phase.type === 'hold') spawnParticles('♨️', 90, 146, 14, -34);
-    if (phase.type === 'exhale') spawnParticles('💨', 94, 76, 26, -18);
     phaseStart = performance.now();
 
     let secondsLeft = PHASE_SECONDS;
@@ -160,7 +142,6 @@ function startBreathing(patternName) {
 function stopBreathing() {
   clearInterval(breathTimer);
   cancelAnimationFrame(breathFrame);
-  charParticles.innerHTML = '';
   breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
   breathingPlayEl.classList.add('hidden');
   breathingSelectEl.classList.remove('hidden');
