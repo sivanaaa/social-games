@@ -202,8 +202,8 @@ body {
 .phase-hold #torsoGroup { transform: scale(1.17, 1.1); }
 .phase-exhale #torsoGroup { transform: scale(0.92, 0.95); }
 
-#charBody { fill: url(#gradApron); stroke: #5c4030; stroke-width: 2.5; }
-#apronBib { fill: url(#gradBib); stroke: #5c4030; stroke-width: 2.2; stroke-linejoin: round; }
+#charBody { fill: url(#gradApron); stroke: #7a5a44; stroke-width: 2; }
+#apronBib { fill: url(#gradBib); stroke: #7a5a44; stroke-width: 1.8; stroke-linejoin: round; }
 .arm-rest {
   stroke: #f0c090;
   stroke-width: 11;
@@ -241,9 +241,9 @@ body {
 }
 
 /* ראש, פנים ומטפחת */
-#charHead { fill: url(#gradHead); stroke: #5c4030; stroke-width: 2.5; }
-#headscarf { fill: url(#gradScarf); stroke: #5c4030; stroke-width: 2.5; stroke-linejoin: round; }
-.scarfTrim circle { fill: #c9784a; r: 2.4px; }
+#charHead { fill: url(#gradHead); stroke: #7a5a44; stroke-width: 2; }
+#headscarf { fill: url(#gradScarf); stroke: #7a5a44; stroke-width: 2; stroke-linejoin: round; }
+.scarfTrim circle { fill: #d9a689; r: 1.8px; }
 
 .eyebrows {
   transition: transform 4s ease-in-out;
@@ -251,8 +251,8 @@ body {
   transform-origin: center;
 }
 .eyebrow {
-  stroke: #8a5a3a;
-  stroke-width: 2.8;
+  stroke: #a07852;
+  stroke-width: 2.4;
   stroke-linecap: round;
 }
 .phase-hold .eyebrows { transform: translateY(-3px); }
@@ -275,8 +275,8 @@ body {
 .eye-white { fill: #fff; }
 .pupil { fill: #5c4030; }
 .eye-closed {
-  stroke: #5c4030;
-  stroke-width: 3;
+  stroke: #7a5a44;
+  stroke-width: 2.6;
   stroke-linecap: round;
   opacity: 0;
 }
@@ -284,12 +284,17 @@ body {
 .phase-hold .eye { opacity: 0; }
 .phase-hold .eye-closed { opacity: 1; }
 
-.mouth { opacity: 0; fill: #a8452f; transition: opacity 0.3s ease; }
-.mouth-inhale, .mouth-exhale { rx: 5px; ry: 6px; }
-.mouth-hold { fill: none; stroke: #a8452f; stroke-width: 3.5; stroke-linecap: round; }
+.mouth { opacity: 0; transition: opacity 0.3s ease; }
+.mouth-inhale, .mouth-hold {
+  fill: none;
+  stroke: #c06a5e;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+.mouth-exhale { fill: #c06a5e; rx: 6px; ry: 6px; }
 .phase-inhale .mouth-inhale { opacity: 1; }
 .phase-hold .mouth-hold { opacity: 1; }
-.phase-exhale .mouth-exhale { opacity: 1; rx: 9px; ry: 8px; }
+.phase-exhale .mouth-exhale { opacity: 1; }
 
 /* קווי נשיפה - נראים רק בשלב הנשיפה */
 .breathLines {
