@@ -25,8 +25,7 @@ backBtn.addEventListener('click', () => {
 // ===== תרגילי נשימה =====
 const breathingSelectEl = document.getElementById('breathing-select');
 const breathingPlayEl = document.getElementById('breathing-play');
-const breathShape = document.getElementById('breathShape');
-const breathDot = document.getElementById('breathDot');
+const pinwheel = document.getElementById('pinwheel');
 const breathChar = document.getElementById('breathChar');
 const breathLabel = document.getElementById('breathLabel');
 const breathCaption = document.getElementById('breathCaption');
@@ -35,7 +34,6 @@ const breathStopBtn = document.getElementById('breathStop');
 
 const PATTERNS = {
   triangle: {
-    points: [[100, 20], [180, 170], [20, 170]],
     phases: [
       { type: 'inhale', label: 'שאפו אוויר' },
       { type: 'hold', label: 'החזיקו רגע...' },
@@ -43,7 +41,6 @@ const PATTERNS = {
     ]
   },
   rectangle: {
-    points: [[30, 30], [170, 30], [170, 170], [30, 170]],
     phases: [
       { type: 'inhale', label: 'שאפו אוויר' },
       { type: 'hold', label: 'החזיקו רגע...' },
@@ -56,22 +53,22 @@ const PHASE_SECONDS = 4;
 
 const CAPTIONS = {
   inhale: [
-    'סבתא שואפת עמוק... איזה ריח דייסה משגע 🥣',
-    'סבתא מערבבת בסיר ושואפת את הניחוח המתוק 😌',
-    'שאיפה עמוקה, בדיוק כמו שסבתא נהנית מהריח שעולה מהסיר 🍯',
-    'שואפים כמו שסבתא שואפת את ריח הקינמון בדייסה 🍂'
+    'סבתא שואפת עמוק... איזה ריח דייסה משגע',
+    'סבתא מערבבת בסיר ושואפת את הניחוח המתוק',
+    'שאיפה עמוקה, בדיוק כמו שסבתא נהנית מהריח שעולה מהסיר',
+    'שואפים כמו שסבתא שואפת את ריח הקינמון בדייסה'
   ],
   hold: [
-    'סבתא מקפיאה את הכף באוויר... עוד רגע טועמת 🤫',
-    'סבתא בודקת: "רגע, זה כבר מוכן?" ומחכה בלי לזוז 🧐',
-    'תחזיקו כמו שסבתא מחזיקה את הכף לפני שהיא טועמת 🥄',
-    'רגע של מתח... הדייסה בסיר, וסבתא מחכה שתתקרר קצת 🔥'
+    'סבתא מקפיאה את הכף באוויר... עוד רגע טועמת',
+    'סבתא בודקת: "רגע, זה כבר מוכן?" ומחכה בלי לזוז',
+    'תחזיקו כמו שסבתא מחזיקה את הכף לפני שהיא טועמת',
+    'רגע של מתח... הדייסה בסיר, וסבתא מחכה שתתקרר קצת'
   ],
   exhale: [
-    'סבתא נושפת חזק על הכף החמה, לא רוצים לשרוף את הלשון! 💨',
-    'נשיפה ארוכה על הדייסה הרותחת, בדיוק כמו סבתא 😮‍💨',
-    'תנשפו את זה כמו שסבתא מצננת את הדייסה לפני שהיא טועמת 🥣',
-    'נשפו לאט, כמו שסבתא מצננת כפית אחרי כפית 💨'
+    'סבתא נושפת חזק על הכף החמה, לא רוצים לשרוף את הלשון!',
+    'נשיפה ארוכה על הדייסה הרותחת, בדיוק כמו סבתא',
+    'תנשפו את זה כמו שסבתא מצננת את הדייסה לפני שהיא טועמת',
+    'נשפו לאט, כמו שסבתא מצננת כפית אחרי כפית'
   ]
 };
 let lastCaption = {};
@@ -85,7 +82,6 @@ function pickCaption(type) {
 }
 
 let breathTimer = null;
-let breathFrame = null;
 
 document.querySelectorAll('.choice-card').forEach(btn => {
   btn.addEventListener('click', () => startBreathing(btn.dataset.pattern));
@@ -94,12 +90,10 @@ breathStopBtn.addEventListener('click', stopBreathing);
 
 function startBreathing(patternName) {
   const pattern = PATTERNS[patternName];
-  breathShape.setAttribute('points', pattern.points.map(p => p.join(',')).join(' '));
   breathingSelectEl.classList.add('hidden');
   breathingPlayEl.classList.remove('hidden');
 
   let phaseIndex = 0;
-  let phaseStart = performance.now();
 
   function runPhase() {
     const phase = pattern.phases[phaseIndex];
@@ -107,7 +101,8 @@ function startBreathing(patternName) {
     breathCaption.textContent = pickCaption(phase.type);
     breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
     breathChar.classList.add('phase-' + phase.type);
-    phaseStart = performance.now();
+    pinwheel.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+    pinwheel.classList.add('phase-' + phase.type);
 
     let secondsLeft = PHASE_SECONDS;
     breathCount.textContent = secondsLeft;
@@ -123,42 +118,29 @@ function startBreathing(patternName) {
     }, 1000);
   }
 
-  function animateDot(now) {
-    const elapsed = (now - phaseStart) / 1000;
-    const t = Math.min(elapsed / PHASE_SECONDS, 1);
-    const a = pattern.points[phaseIndex];
-    const b = pattern.points[(phaseIndex + 1) % pattern.points.length];
-    const x = a[0] + (b[0] - a[0]) * t;
-    const y = a[1] + (b[1] - a[1]) * t;
-    breathDot.setAttribute('cx', x);
-    breathDot.setAttribute('cy', y);
-    breathFrame = requestAnimationFrame(animateDot);
-  }
-
   runPhase();
-  breathFrame = requestAnimationFrame(animateDot);
 }
 
 function stopBreathing() {
   clearInterval(breathTimer);
-  cancelAnimationFrame(breathFrame);
   breathChar.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+  pinwheel.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
   breathingPlayEl.classList.add('hidden');
   breathingSelectEl.classList.remove('hidden');
 }
 
 // ===== בדיחות להפגת חרדה =====
 const JOKES = [
-  'למה המחשב הלך לרופא? כי היה לו וירוס! 🤒💻',
-  'מה אומר אפס לשמונה? יפה החגורה! 🎯',
-  'למה הדג לא משחק טניס? כי הוא מפחד מהרשת! 🐟',
-  'מה קורה לצפרדע שהמכונית שלה מתקלקלת? היא נגררת! 🐸',
-  'למה הספר לא מפסיק לבכות? כי יש לו יותר מדי עמודים עצובים! 📖',
-  'למה העיפרון היה עצוב? כי לא היה לו כיוון! ✏️',
-  'מה אומר קיר לקיר אחר? ניפגש בפינה! 🧱',
-  'למה השעון הלך לפסיכולוג? כי הוא ״תיק תיק תיק״ כל הזמן! ⏰',
-  'למה הכוכב לא נרדם בלילה? כי הוא זוהר מדי! ⭐',
-  'מה אומרים לענן ביום הולדתו? שיהיה לך מזל טוב וגשום! ☁️'
+  'למה המחשב הלך לרופא? כי היה לו וירוס!',
+  'מה אומר אפס לשמונה? יפה החגורה!',
+  'למה הדג לא משחק טניס? כי הוא מפחד מהרשת!',
+  'מה קורה לצפרדע שהמכונית שלה מתקלקלת? היא נגררת!',
+  'למה הספר לא מפסיק לבכות? כי יש לו יותר מדי עמודים עצובים!',
+  'למה העיפרון היה עצוב? כי לא היה לו כיוון!',
+  'מה אומר קיר לקיר אחר? ניפגש בפינה!',
+  'למה השעון הלך לפסיכולוג? כי הוא ״תיק תיק תיק״ כל הזמן!',
+  'למה הכוכב לא נרדם בלילה? כי הוא זוהר מדי!',
+  'מה אומרים לענן ביום הולדתו? שיהיה לך מזל טוב וגשום!'
 ];
 let lastJoke = -1;
 
@@ -194,20 +176,42 @@ function showRandomSentence() {
 document.getElementById('nextSentence').addEventListener('click', showRandomSentence);
 
 // ===== הפינה שלי =====
-const MOODS = ['😊', '😢', '😠', '😨', '😐', '🥰'];
+const MOODS = [
+  { id: 'happy', label: 'שמח' },
+  { id: 'sad', label: 'עצוב' },
+  { id: 'angry', label: 'כועס' },
+  { id: 'scared', label: 'מפוחד' },
+  { id: 'neutral', label: 'רגוע' },
+  { id: 'loving', label: 'אוהב' }
+];
+
+const MOOD_FACES = {
+  happy: '<circle class="dot" cx="14" cy="16" r="2"></circle><circle class="dot" cx="26" cy="16" r="2"></circle><path d="M12 24 Q20 32 28 24"></path>',
+  sad: '<circle class="dot" cx="14" cy="17" r="2"></circle><circle class="dot" cx="26" cy="17" r="2"></circle><path d="M10 12 Q14 9 18 12"></path><path d="M22 12 Q26 9 30 12"></path><path d="M12 27 Q20 21 28 27"></path>',
+  angry: '<path d="M9 11 L18 16"></path><path d="M31 11 L22 16"></path><circle class="dot" cx="14" cy="19" r="2"></circle><circle class="dot" cx="26" cy="19" r="2"></circle><path d="M13 27 Q20 24 27 27"></path>',
+  scared: '<circle class="ring" cx="14" cy="17" r="3.2"></circle><circle class="dot" cx="14" cy="17" r="1.2"></circle><circle class="ring" cx="26" cy="17" r="3.2"></circle><circle class="dot" cx="26" cy="17" r="1.2"></circle><path d="M11 11 h6 M23 11 h6"></path><ellipse class="ring-fill" cx="20" cy="27" rx="3.4" ry="4.2"></ellipse>',
+  neutral: '<circle class="dot" cx="14" cy="16" r="2"></circle><circle class="dot" cx="26" cy="16" r="2"></circle><path d="M14 26 H26"></path>',
+  loving: '<path d="M11 16 Q14 12.5 17 16"></path><path d="M23 16 Q26 12.5 29 16"></path><path d="M12 24 Q20 32 28 24"></path><circle class="mood-blush" cx="11" cy="21" r="2.2"></circle><circle class="mood-blush" cx="29" cy="21" r="2.2"></circle>'
+};
+
+function moodIconSVG(id) {
+  return `<svg viewBox="0 0 40 40" class="mood-face">${MOOD_FACES[id]}</svg>`;
+}
+
 const moodRow = document.getElementById('moodRow');
 let selectedMood = null;
 
 MOODS.forEach(mood => {
   const btn = document.createElement('button');
   btn.className = 'mood-btn';
-  btn.textContent = mood;
+  btn.title = mood.label;
+  btn.innerHTML = moodIconSVG(mood.id);
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-    if (selectedMood === mood) {
+    if (selectedMood === mood.id) {
       selectedMood = null;
     } else {
-      selectedMood = mood;
+      selectedMood = mood.id;
       btn.classList.add('selected');
     }
   });
@@ -239,7 +243,7 @@ function renderEntries() {
     item.className = 'entry-item';
     item.innerHTML = `
       <div class="entry-header">
-        <span>${entry.mood || ''}</span>
+        <span class="entry-mood">${entry.mood && MOOD_FACES[entry.mood] ? moodIconSVG(entry.mood) : ''}</span>
         <span class="entry-date">${entry.date}</span>
         <button class="entry-delete" data-index="${realIndex}">✕</button>
       </div>

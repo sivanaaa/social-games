@@ -24,10 +24,11 @@
       <div class="stage-map">
         <button class="stage-card color-1" data-screen="breathing">
           <span class="medallion">
-            <svg viewBox="0 0 40 40" class="icon-breathing">
-              <path d="M6 14 H23 a4 4 0 1 0 -4 -4" fill="none" stroke-width="3" stroke-linecap="round"></path>
-              <path d="M6 21 H29 a4 4 0 1 1 -4 4" fill="none" stroke-width="3" stroke-linecap="round"></path>
-              <path d="M6 28 H19" fill="none" stroke-width="3" stroke-linecap="round"></path>
+            <svg viewBox="0 0 40 40" class="icon-leaves">
+              <path class="leaf leaf-1" d="M20 30 C11 28 8 20 12 11 C21 13 25 21 20 30 Z"></path>
+              <path class="leaf leaf-2" d="M20 30 C29 28 32 20 28 11 C19 13 15 21 20 30 Z"></path>
+              <path class="leaf-vein leaf-vein-1" d="M20 30 C16 24 15 17 14 12"></path>
+              <path class="leaf-vein leaf-vein-2" d="M20 30 C24 24 25 17 26 12"></path>
             </svg>
           </span>
           <span class="stage-title">תרגילי נשימה</span>
@@ -35,10 +36,11 @@
         <button class="stage-card color-2" data-screen="jokes">
           <span class="medallion">
             <svg viewBox="0 0 40 40" class="icon-jokes">
-              <path d="M8 10 h24 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 h-14 l-6 6 v-6 h-4 a4 4 0 0 1 -4 -4 v-10 a4 4 0 0 1 4 -4 Z"></path>
-              <circle cx="16" cy="19" r="1.6"></circle>
-              <circle cx="24" cy="19" r="1.6"></circle>
-              <path d="M14 23 Q20 28 26 23" fill="none" stroke-width="2" stroke-linecap="round"></path>
+              <path class="paper-back" d="M9 12 h24 a3 3 0 0 1 3 3 v9 a3 3 0 0 1 -3 3 h-13 l-7 6 v-6 h-4 a3 3 0 0 1 -3 -3 v-9 a3 3 0 0 1 3 -3 Z"></path>
+              <path class="paper-front" d="M7 10 h24 a3 3 0 0 1 3 3 v9 a3 3 0 0 1 -3 3 h-13 l-7 6 v-6 h-4 a3 3 0 0 1 -3 -3 v-9 a3 3 0 0 1 3 -3 Z"></path>
+              <rect class="confetti c1" x="12" y="14" width="4" height="6" rx="1.5" transform="rotate(-20 14 17)"></rect>
+              <rect class="confetti c2" x="18" y="12" width="4" height="6" rx="1.5" transform="rotate(15 20 15)"></rect>
+              <rect class="confetti c3" x="23" y="15" width="4" height="6" rx="1.5" transform="rotate(-10 25 18)"></rect>
             </svg>
           </span>
           <span class="stage-title">בדיחות להפגת חרדה</span>
@@ -46,10 +48,9 @@
         <button class="stage-card color-3" data-screen="sentences">
           <span class="medallion">
             <svg viewBox="0 0 40 40" class="icon-book">
-              <path d="M20 12 C16 9 10 9 6 11 v18 c4 -2 10 -2 14 1 c4 -3 10 -3 14 -1 v-18 c-4 -2 -10 -2 -14 1 Z"></path>
-              <path d="M20 12 v19" stroke-width="1.5"></path>
-              <path d="M9 15 h7 M9 19 h7 M9 23 h6" stroke-width="1.2" stroke-linecap="round"></path>
-              <path d="M24 15 h7 M24 19 h7 M25 23 h6" stroke-width="1.2" stroke-linecap="round"></path>
+              <path class="page page-left" d="M20 13 C16 10 10 10 6 12 v17 c4 -2 10 -2 14 1 Z"></path>
+              <path class="page page-right" d="M20 13 C24 10 30 10 34 12 v17 c-4 -2 -10 -2 -14 1 Z"></path>
+              <path class="spine" d="M20 13 v18"></path>
             </svg>
           </span>
           <span class="stage-title">משפטים שעוזרים</span>
@@ -57,8 +58,13 @@
         <button class="stage-card color-4" data-screen="personal">
           <span class="medallion">
             <svg viewBox="0 0 40 40" class="icon-heart">
-              <path d="M20 30 C10 23 6 17 9 12 C11 8.5 16 8 20 12.5 C24 8 29 8.5 31 12 C34 17 30 23 20 30 Z"></path>
-              <path d="M20 12 l1.4 3 3 0.4 -2.2 2.1 0.6 3 -2.8 -1.5 -2.8 1.5 0.6 -3 -2.2 -2.1 3 -0.4 Z" opacity="0.9"></path>
+              <path class="heart-back" d="M21 31 C11 24 7 18 10 13 C12 9.5 17 9 21 13.5 C25 9 30 9.5 32 13 C35 18 31 24 21 31 Z"></path>
+              <path class="heart-front" d="M20 30 C10 23 6 17 9 12 C11 8.5 16 8 20 12.5 C24 8 29 8.5 31 12 C34 17 30 23 20 30 Z"></path>
+              <g class="heart-spark" transform="translate(4,0)">
+                <path d="M20,2 C23,6 23,12 20,14 C17,12 17,6 20,2 Z" transform="rotate(0 20 10)"></path>
+                <path d="M20,2 C23,6 23,12 20,14 C17,12 17,6 20,2 Z" transform="rotate(130 20 10)"></path>
+                <path d="M20,2 C23,6 23,12 20,14 C17,12 17,6 20,2 Z" transform="rotate(250 20 10)"></path>
+              </g>
             </svg>
           </span>
           <span class="stage-title">הפינה שלי</span>
@@ -73,18 +79,23 @@
         <div class="choice-row">
           <button class="choice-card" data-pattern="triangle">
             <span class="medallion">
-              <svg viewBox="0 0 40 40" class="icon-triangle">
-                <path d="M20 8 L33 30 H7 Z" fill="none" stroke-width="3" stroke-linejoin="round"></path>
-                <circle cx="20" cy="8" r="2"></circle>
+              <svg viewBox="0 0 40 40" class="icon-origami">
+                <path class="fold fold-1" d="M20 20 L20 6 L32 20 Z"></path>
+                <path class="fold fold-2" d="M20 20 L32 20 L23 33 Z"></path>
+                <path class="fold fold-3" d="M20 20 L23 33 L8 25 Z"></path>
+                <path class="fold-crease" d="M20 6 L20 20 L32 20 M20 20 L23 33 M20 20 L8 25"></path>
               </svg>
             </span>
             <span class="choice-title">נשימת משולש</span>
           </button>
           <button class="choice-card" data-pattern="rectangle">
             <span class="medallion">
-              <svg viewBox="0 0 40 40" class="icon-rect">
-                <rect x="8" y="10" width="24" height="20" rx="4" fill="none" stroke-width="3"></rect>
-                <circle cx="8" cy="10" r="2"></circle>
+              <svg viewBox="0 0 40 40" class="icon-pinwheel-mini">
+                <path class="blade blade-1" d="M20 20 L20 6 C25 7 27 12 24 17 Z"></path>
+                <path class="blade blade-2" d="M20 20 L34 20 C33 25 28 27 23 24 Z"></path>
+                <path class="blade blade-3" d="M20 20 L20 34 C15 33 13 28 16 23 Z"></path>
+                <path class="blade blade-4" d="M20 20 L6 20 C7 15 12 13 17 16 Z"></path>
+                <circle class="pin" cx="20" cy="20" r="2.4"></circle>
               </svg>
             </span>
             <span class="choice-title">נשימת מלבן</span>
@@ -95,42 +106,6 @@
       <div id="breathing-play" class="hidden">
         <div class="char-wrap">
           <svg id="breathChar" viewBox="0 0 200 200" class="phase-inhale">
-            <defs>
-              <linearGradient id="gradApron" x1="0.15" y1="0" x2="0.9" y2="1">
-                <stop offset="0" stop-color="#a5424f"></stop>
-                <stop offset="0.55" stop-color="#8a2f3c"></stop>
-                <stop offset="1" stop-color="#661f2a"></stop>
-              </linearGradient>
-              <linearGradient id="gradBib" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#4bab94"></stop>
-                <stop offset="1" stop-color="#286b5a"></stop>
-              </linearGradient>
-              <radialGradient id="gradHead" cx="0.35" cy="0.3" r="0.8">
-                <stop offset="0" stop-color="#ffedd4"></stop>
-                <stop offset="1" stop-color="#f0bc85"></stop>
-              </radialGradient>
-              <linearGradient id="gradScarf" x1="0" y1="0" x2="0.3" y2="1">
-                <stop offset="0" stop-color="#fff8ec"></stop>
-                <stop offset="1" stop-color="#d9c7a1"></stop>
-              </linearGradient>
-              <linearGradient id="gradPot" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#6fae7c"></stop>
-                <stop offset="1" stop-color="#2f6b4f"></stop>
-              </linearGradient>
-              <linearGradient id="gradGoldTrim" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#f4d597"></stop>
-                <stop offset="1" stop-color="#c98a35"></stop>
-              </linearGradient>
-              <linearGradient id="gradSleeve" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#f0cd85"></stop>
-                <stop offset="1" stop-color="#c98a35"></stop>
-              </linearGradient>
-              <radialGradient id="gradPorridge" cx="0.4" cy="0.3" r="0.9">
-                <stop offset="0" stop-color="#fdedc0"></stop>
-                <stop offset="1" stop-color="#e7c377"></stop>
-              </radialGradient>
-            </defs>
-
             <ellipse id="groundShadow" cx="100" cy="197" rx="50" ry="6"></ellipse>
 
             <path class="arm-rest" d="M70,112 Q54,124 58,142" fill="none"></path>
@@ -204,9 +179,17 @@
             </g>
           </svg>
         </div>
-        <svg id="breathSvg" class="guide-svg" viewBox="0 0 200 200">
-          <polygon id="breathShape" class="breath-shape" points=""></polygon>
-          <circle id="breathDot" class="breath-dot" r="7"></circle>
+        <svg id="pinwheel" class="guide-svg phase-inhale" viewBox="0 0 100 100">
+          <ellipse class="pinwheel-shadow" cx="50" cy="90" rx="26" ry="5"></ellipse>
+          <rect class="pinwheel-stick" x="47" y="52" width="6" height="38" rx="3"></rect>
+          <g class="pinwheel-blades">
+            <path class="blade blade-1" d="M50,50 L50,10 C60,13 65,22 62,32 Z"></path>
+            <path class="blade blade-2" d="M50,50 L90,50 C87,60 78,65 68,62 Z"></path>
+            <path class="blade blade-3" d="M50,50 L50,90 C40,87 35,78 38,68 Z"></path>
+            <path class="blade blade-4" d="M50,50 L10,50 C13,40 22,35 32,38 Z"></path>
+          </g>
+          <circle class="pinwheel-pin" cx="50" cy="50" r="5"></circle>
+          <circle class="pinwheel-pin-hi" cx="48.6" cy="48.6" r="1.5"></circle>
         </svg>
         <div id="breathLabel">שאפו אוויר</div>
         <div id="breathCaption"></div>
